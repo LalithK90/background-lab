@@ -13,16 +13,16 @@ Mark items `[x]` as they get implemented. Items already live in the code are pre
 - [x] 4. Bubble Float
 - [x] 5. Galaxy Dust
 - [x] 6. Neon Pulse
-- [ ] 7. Attract Swarm
-- [ ] 8. Fireflies
-- [ ] 9. Matrix Rain
-- [ ] 10. Constellation
-- [ ] 11. Confetti Burst
-- [ ] 12. Fireworks
-- [ ] 13. Magnetic Field
-- [ ] 14. Rain Drops
-- [ ] 15. Embers Rising
-- [ ] 16. Pollen Drift
+- [x] 7. Attract Swarm
+- [x] 8. Fireflies
+- [x] 9. Matrix Rain
+- [x] 10. Constellation
+- [x] 11. Confetti Burst
+- [x] 12. Fireworks
+- [x] 13. Magnetic Field
+- [x] 14. Rain Drops
+- [x] 15. Embers Rising
+- [x] 16. Pollen Drift
 - [ ] 17. Star Cluster
 - [ ] 18. Plasma Spark
 - [ ] 19. Electric Web
