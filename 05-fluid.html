@@ -74,6 +74,10 @@
         <canvas id="flowCanvas"></canvas>
       </div>
 
+      <div class="fluid-scene" id="fluid-dynamic">
+        <div class="goo-wrap" id="fluidDynamicWrap"></div>
+      </div>
+
     </div>
   </div>
   <div id="cursorSpotlight"></div>
@@ -106,6 +110,50 @@
       <button class="style-btn" data-style="organic">Organic Blobs</button>
       <button class="style-btn" data-style="mouse">Mouse Interaction</button>
       <button class="style-btn" data-style="colorflow">Color-flow Simulation</button>
+      <button class="style-btn" data-style="lavaLamp">Lava Lamp</button>
+      <button class="style-btn" data-style="inkDrop">Ink Drop</button>
+      <button class="style-btn" data-style="marbleSwirl">Marble Swirl</button>
+      <button class="style-btn" data-style="plasma">Plasma</button>
+      <button class="style-btn" data-style="bubblesRising">Bubbles Rising</button>
+      <button class="style-btn" data-style="multiPointAttraction">Multi-point Attraction</button>
+      <button class="style-btn" data-style="oilSlick">Oil Slick</button>
+      <button class="style-btn" data-style="mercuryDrop">Mercury Drop</button>
+      <button class="style-btn" data-style="paintMixing">Paint Mixing</button>
+      <button class="style-btn" data-style="honeyDrip">Honey Drip</button>
+      <button class="style-btn" data-style="jellyWobble">Jelly Wobble</button>
+      <button class="style-btn" data-style="cellDivision">Cell Division</button>
+      <button class="style-btn" data-style="smokeWisp">Smoke Wisp</button>
+      <button class="style-btn" data-style="watercolorBleed">Watercolor Bleed</button>
+      <button class="style-btn" data-style="moltenMetal">Molten Metal</button>
+      <button class="style-btn" data-style="creamSwirl">Cream Swirl</button>
+      <button class="style-btn" data-style="galaxyFluid">Galaxy Fluid</button>
+      <button class="style-btn" data-style="neonOoze">Neon Ooze</button>
+      <button class="style-btn" data-style="crystalGrowth">Crystal Growth</button>
+      <button class="style-btn" data-style="bloodCellFlow">Blood Cell Flow</button>
+      <button class="style-btn" data-style="magmaFlow">Magma Flow</button>
+      <button class="style-btn" data-style="soapBubbleFilm">Soap Bubble Film</button>
+      <button class="style-btn" data-style="tieDyeSwirl">Tie-Dye Swirl</button>
+      <button class="style-btn" data-style="digitalLiquid">Digital Liquid</button>
+      <button class="style-btn" data-style="electricPlasma">Electric Plasma</button>
+      <button class="style-btn" data-style="nebulaFluid">Nebula Fluid</button>
+      <button class="style-btn" data-style="chromeLiquid">Chrome Liquid</button>
+      <button class="style-btn" data-style="waxMelt">Wax Melt</button>
+      <button class="style-btn" data-style="gelBlob">Gel Blob</button>
+      <button class="style-btn" data-style="rainbowSlime">Rainbow Slime</button>
+      <button class="style-btn" data-style="deepSeaFluid">Deep Sea Fluid</button>
+      <button class="style-btn" data-style="auroraFluid">Aurora Fluid</button>
+      <button class="style-btn" data-style="iridescentBubble">Iridescent Bubble</button>
+      <button class="style-btn" data-style="thermalImagingFlow">Thermal Imaging Flow</button>
+      <button class="style-btn" data-style="soundReactiveFluid">Sound Reactive Fluid</button>
+      <button class="style-btn" data-style="vortexFluid">Vortex Fluid</button>
+      <button class="style-btn" data-style="acidWash">Acid Wash</button>
+      <button class="style-btn" data-style="cloudMorph">Cloud Morph</button>
+      <button class="style-btn" data-style="ripplePond">Ripple Pond</button>
+      <button class="style-btn" data-style="silkFluid">Silk Fluid</button>
+      <button class="style-btn" data-style="prismLiquid">Prism Liquid</button>
+      <button class="style-btn" data-style="staticElectricityFlow">Static Electricity Flow</button>
+      <button class="style-btn" data-style="bioluminescentFluid">Bioluminescent Fluid</button>
+      <button class="style-btn" data-style="cosmicInk">Cosmic Ink</button>
     </div>
   </main>
 
@@ -167,9 +215,83 @@
     });
 
     function setStyle (name) {
-      scenes.forEach((s) => s.classList.toggle('active', s.id === `fluid-${name}`));
+      const isDynamic = !!fluidDynamicConfigs[name];
+      scenes.forEach((s) => s.classList.toggle('active', isDynamic ? s.id === 'fluid-dynamic' : s.id === `fluid-${name}`));
+      if (isDynamic) renderFluidDynamic(name);
       if (name === 'mouse') startMouseFollow(); else stopMouseFollow();
       if (name === 'colorflow') startFlow(); else stopFlow();
+    }
+
+    // Reusable goo-blob generator for the 44 extra fluid variations (color/size/motion driven)
+    const fluidDynamicConfigs = {
+      lavaLamp: { bg: '#1a0a05', colors: [ '#f97316', '#dc2626', '#facc15' ], count: 5, sizeMin: 80, sizeMax: 180, duration: 20, motion: 'float' },
+      inkDrop: { bg: '#0a0a12', colors: [ '#312e81', '#1e1b4b' ], count: 4, sizeMin: 60, sizeMax: 160, duration: 14, motion: 'morph' },
+      marbleSwirl: { bg: '#0f172a', colors: [ '#e2e8f0', '#94a3b8', '#1e293b' ], count: 5, sizeMin: 70, sizeMax: 150, duration: 16, motion: 'morph' },
+      plasma: { bg: '#05000f', colors: [ '#a855f7', '#ec4899', '#22d3ee' ], count: 6, sizeMin: 100, sizeMax: 200, duration: 9, motion: 'float' },
+      bubblesRising: { bg: '#001518', colors: [ '#38bdf8', '#7dd3fc' ], count: 8, sizeMin: 20, sizeMax: 60, duration: 12, motion: 'float' },
+      multiPointAttraction: { bg: '#0a0a12', colors: [ '#f472b6', '#38bdf8', '#facc15' ], count: 6, sizeMin: 60, sizeMax: 140, duration: 14, motion: 'float' },
+      oilSlick: { bg: '#04070a', colors: [ '#0891b2', '#7c3aed', '#065f46' ], count: 5, sizeMin: 90, sizeMax: 170, duration: 18, motion: 'morph' },
+      mercuryDrop: { bg: '#0a0a12', colors: [ '#cbd5e1', '#e2e8f0' ], count: 4, sizeMin: 70, sizeMax: 150, duration: 10, motion: 'morph' },
+      paintMixing: { bg: '#0a0a12', colors: [ '#ef4444', '#eab308', '#3b82f6', '#22c55e' ], count: 6, sizeMin: 70, sizeMax: 150, duration: 15, motion: 'float' },
+      honeyDrip: { bg: '#160c02', colors: [ '#d97706', '#f59e0b' ], count: 4, sizeMin: 60, sizeMax: 140, duration: 22, motion: 'morph' },
+      jellyWobble: { bg: '#0a0a12', colors: [ '#f9a8d4', '#c4b5fd' ], count: 5, sizeMin: 80, sizeMax: 160, duration: 8, motion: 'morph' },
+      cellDivision: { bg: '#020a05', colors: [ '#4ade80', '#22c55e' ], count: 6, sizeMin: 50, sizeMax: 120, duration: 11, motion: 'float' },
+      smokeWisp: { bg: '#0a0a0a', colors: [ '#94a3b8', '#cbd5e1' ], count: 5, sizeMin: 100, sizeMax: 200, duration: 24, motion: 'morph' },
+      watercolorBleed: { bg: '#0a0a12', colors: [ '#38bdf8', '#a855f7', '#f472b6' ], count: 6, sizeMin: 80, sizeMax: 170, duration: 26, motion: 'morph' },
+      moltenMetal: { bg: '#0a0a0a', colors: [ '#94a3b8', '#e2e8f0', '#f97316' ], count: 5, sizeMin: 80, sizeMax: 160, duration: 13, motion: 'float' },
+      creamSwirl: { bg: '#1a1006', colors: [ '#fef3c7', '#fde68a' ], count: 4, sizeMin: 90, sizeMax: 170, duration: 20, motion: 'morph' },
+      galaxyFluid: { bg: '#04040f', colors: [ '#7c3aed', '#db2777', '#1d4ed8' ], count: 6, sizeMin: 70, sizeMax: 160, duration: 24, motion: 'float' },
+      neonOoze: { bg: '#05000f', colors: [ '#22d3ee', '#a855f7' ], count: 5, sizeMin: 80, sizeMax: 170, duration: 9, motion: 'morph' },
+      crystalGrowth: { bg: '#0b1220', colors: [ '#93c5fd', '#e0f2fe' ], count: 5, sizeMin: 60, sizeMax: 140, duration: 16, motion: 'morph' },
+      bloodCellFlow: { bg: '#100404', colors: [ '#dc2626', '#7f1d1d' ], count: 6, sizeMin: 50, sizeMax: 110, duration: 10, motion: 'float' },
+      magmaFlow: { bg: '#140800', colors: [ '#ef4444', '#f97316', '#7c2d12' ], count: 5, sizeMin: 90, sizeMax: 170, duration: 12, motion: 'float' },
+      soapBubbleFilm: { bg: '#0a0a12', colors: [ '#a5f3fc', '#f9a8d4', '#c4b5fd' ], count: 6, sizeMin: 60, sizeMax: 150, duration: 18, motion: 'float' },
+      tieDyeSwirl: { bg: '#0a0a12', colors: [ '#ef4444', '#f59e0b', '#22c55e', '#3b82f6', '#a855f7' ], count: 7, sizeMin: 60, sizeMax: 140, duration: 14, motion: 'morph' },
+      digitalLiquid: { bg: '#04040a', colors: [ '#22d3ee', '#38bdf8' ], count: 5, sizeMin: 70, sizeMax: 150, duration: 9, motion: 'float' },
+      electricPlasma: { bg: '#05000f', colors: [ '#a855f7', '#22d3ee', '#f472b6' ], count: 6, sizeMin: 70, sizeMax: 150, duration: 7, motion: 'float' },
+      nebulaFluid: { bg: '#0c0518', colors: [ '#c084fc', '#f472b6', '#818cf8' ], count: 6, sizeMin: 100, sizeMax: 200, duration: 26, motion: 'morph' },
+      chromeLiquid: { bg: '#0a0a0a', colors: [ '#94a3b8', '#f8fafc', '#64748b' ], count: 5, sizeMin: 80, sizeMax: 160, duration: 11, motion: 'morph' },
+      waxMelt: { bg: '#160c02', colors: [ '#f59e0b', '#78350f' ], count: 4, sizeMin: 90, sizeMax: 170, duration: 24, motion: 'morph' },
+      gelBlob: { bg: '#0a0a12', colors: [ '#34d399', '#22d3ee' ], count: 5, sizeMin: 80, sizeMax: 160, duration: 15, motion: 'morph' },
+      rainbowSlime: { bg: '#0a0a12', colors: [ '#ef4444', '#f59e0b', '#facc15', '#22c55e', '#3b82f6', '#a855f7' ], count: 7, sizeMin: 60, sizeMax: 140, duration: 12, motion: 'float' },
+      deepSeaFluid: { bg: '#00040a', colors: [ '#0891b2', '#082f49' ], count: 5, sizeMin: 90, sizeMax: 180, duration: 22, motion: 'float' },
+      auroraFluid: { bg: '#04050a', colors: [ '#34d399', '#22d3ee', '#a855f7' ], count: 6, sizeMin: 80, sizeMax: 160, duration: 20, motion: 'float' },
+      iridescentBubble: { bg: '#0a0a12', colors: [ '#a5f3fc', '#f9a8d4', '#fef9c3' ], count: 5, sizeMin: 60, sizeMax: 140, duration: 16, motion: 'float' },
+      thermalImagingFlow: { bg: '#050505', colors: [ '#3b82f6', '#22c55e', '#facc15', '#ef4444' ], count: 6, sizeMin: 70, sizeMax: 150, duration: 13, motion: 'float' },
+      soundReactiveFluid: { bg: '#0a0a12', colors: [ '#a855f7', '#ec4899' ], count: 6, sizeMin: 60, sizeMax: 150, duration: 5, motion: 'float' },
+      vortexFluid: { bg: '#0a0a12', colors: [ '#f472b6', '#818cf8' ], count: 6, sizeMin: 70, sizeMax: 150, duration: 8, motion: 'float' },
+      acidWash: { bg: '#0a1006', colors: [ '#a3e635', '#84cc16' ], count: 5, sizeMin: 80, sizeMax: 160, duration: 10, motion: 'morph' },
+      cloudMorph: { bg: '#0f172a', colors: [ '#e2e8f0', '#cbd5e1' ], count: 5, sizeMin: 110, sizeMax: 210, duration: 28, motion: 'morph' },
+      ripplePond: { bg: '#04141a', colors: [ '#38bdf8', '#7dd3fc' ], count: 5, sizeMin: 70, sizeMax: 150, duration: 20, motion: 'float' },
+      silkFluid: { bg: '#0a0a12', colors: [ '#f9a8d4', '#c4b5fd' ], count: 5, sizeMin: 90, sizeMax: 170, duration: 24, motion: 'morph' },
+      prismLiquid: { bg: '#0a0a12', colors: [ '#ef4444', '#22c55e', '#3b82f6', '#facc15' ], count: 6, sizeMin: 70, sizeMax: 150, duration: 16, motion: 'float' },
+      staticElectricityFlow: { bg: '#0a0a0a', colors: [ '#e2e8f0', '#38bdf8' ], count: 6, sizeMin: 50, sizeMax: 120, duration: 4, motion: 'float' },
+      bioluminescentFluid: { bg: '#001518', colors: [ '#2dd4bf', '#5eead4' ], count: 6, sizeMin: 60, sizeMax: 140, duration: 18, motion: 'float' },
+      cosmicInk: { bg: '#04040f', colors: [ '#312e81', '#7c3aed', '#020617' ], count: 5, sizeMin: 90, sizeMax: 180, duration: 22, motion: 'morph' }
+    };
+
+    function renderFluidDynamic (name) {
+      const cfg = fluidDynamicConfigs[name];
+      const scene = document.getElementById('fluid-dynamic');
+      scene.style.background = cfg.bg;
+      const wrap = document.getElementById('fluidDynamicWrap');
+      wrap.innerHTML = '';
+      const motions = [ 'fluid-float-1', 'fluid-float-2', 'fluid-float-3' ];
+      for (let i = 0; i < cfg.count; i++) {
+        const blob = document.createElement('div');
+        blob.className = 'blob';
+        const size = cfg.sizeMin + Math.random() * (cfg.sizeMax - cfg.sizeMin);
+        blob.style.width = `${size}px`;
+        blob.style.height = `${size}px`;
+        blob.style.left = `${Math.random() * 80}%`;
+        blob.style.top = `${Math.random() * 70}%`;
+        blob.style.background = cfg.colors[i % cfg.colors.length];
+        blob.style.animationName = cfg.motion === 'morph' ? 'blob-morph-slow' : motions[i % motions.length];
+        blob.style.animationDuration = reducedMotion ? '0s' : `${cfg.duration + i}s`;
+        blob.style.animationTimingFunction = 'ease-in-out';
+        blob.style.animationIterationCount = 'infinite';
+        wrap.appendChild(blob);
+      }
     }
 
     document.getElementById('styleSelector').addEventListener('click', (e) => {

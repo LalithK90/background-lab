@@ -233,50 +233,50 @@ Mark items `[x]` as they get implemented. Items already live in the code are pre
 - [x] 4. Organic Blobs
 - [x] 5. Fluid Mouse Interaction
 - [x] 6. Color-flow Simulation
-- [ ] 7. Lava Lamp
-- [ ] 8. Ink Drop
-- [ ] 9. Marble Swirl
-- [ ] 10. Plasma
-- [ ] 11. Bubbles Rising
-- [ ] 12. Multi-point Attraction
-- [ ] 13. Oil Slick
-- [ ] 14. Mercury Drop
-- [ ] 15. Paint Mixing
-- [ ] 16. Honey Drip
-- [ ] 17. Jelly Wobble
-- [ ] 18. Cell Division
-- [ ] 19. Smoke Wisp
-- [ ] 20. Watercolor Bleed
-- [ ] 21. Molten Metal
-- [ ] 22. Cream Swirl
-- [ ] 23. Galaxy Fluid
-- [ ] 24. Neon Ooze
-- [ ] 25. Crystal Growth
-- [ ] 26. Blood Cell Flow
-- [ ] 27. Magma Flow
-- [ ] 28. Soap Bubble Film
-- [ ] 29. Tie-Dye Swirl
-- [ ] 30. Digital Liquid
-- [ ] 31. Electric Plasma
-- [ ] 32. Nebula Fluid
-- [ ] 33. Chrome Liquid
-- [ ] 34. Wax Melt
-- [ ] 35. Gel Blob
-- [ ] 36. Rainbow Slime
-- [ ] 37. Deep Sea Fluid
-- [ ] 38. Aurora Fluid
-- [ ] 39. Iridescent Bubble
-- [ ] 40. Thermal Imaging Flow
-- [ ] 41. Sound Reactive Fluid
-- [ ] 42. Vortex Fluid
-- [ ] 43. Acid Wash
-- [ ] 44. Cloud Morph
-- [ ] 45. Ripple Pond
-- [ ] 46. Silk Fluid
-- [ ] 47. Prism Liquid
-- [ ] 48. Static Electricity Flow
-- [ ] 49. Bioluminescent Fluid
-- [ ] 50. Cosmic Ink
+- [x] 7. Lava Lamp
+- [x] 8. Ink Drop
+- [x] 9. Marble Swirl
+- [x] 10. Plasma
+- [x] 11. Bubbles Rising
+- [x] 12. Multi-point Attraction
+- [x] 13. Oil Slick
+- [x] 14. Mercury Drop
+- [x] 15. Paint Mixing
+- [x] 16. Honey Drip
+- [x] 17. Jelly Wobble
+- [x] 18. Cell Division
+- [x] 19. Smoke Wisp
+- [x] 20. Watercolor Bleed
+- [x] 21. Molten Metal
+- [x] 22. Cream Swirl
+- [x] 23. Galaxy Fluid
+- [x] 24. Neon Ooze
+- [x] 25. Crystal Growth
+- [x] 26. Blood Cell Flow
+- [x] 27. Magma Flow
+- [x] 28. Soap Bubble Film
+- [x] 29. Tie-Dye Swirl
+- [x] 30. Digital Liquid
+- [x] 31. Electric Plasma
+- [x] 32. Nebula Fluid
+- [x] 33. Chrome Liquid
+- [x] 34. Wax Melt
+- [x] 35. Gel Blob
+- [x] 36. Rainbow Slime
+- [x] 37. Deep Sea Fluid
+- [x] 38. Aurora Fluid
+- [x] 39. Iridescent Bubble
+- [x] 40. Thermal Imaging Flow
+- [x] 41. Sound Reactive Fluid
+- [x] 42. Vortex Fluid
+- [x] 43. Acid Wash
+- [x] 44. Cloud Morph
+- [x] 45. Ripple Pond
+- [x] 46. Silk Fluid
+- [x] 47. Prism Liquid
+- [x] 48. Static Electricity Flow
+- [x] 49. Bioluminescent Fluid
+- [x] 50. Cosmic Ink
 
 ---
 
