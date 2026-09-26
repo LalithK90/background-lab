@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Background Lab — Fluid</title>
+  <link rel="stylesheet" href="05-fluid.css" />
+</head>
+
+<body>
+
+  <svg width="0" height="0" style="position:absolute">
+    <filter id="goo-filter">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blur" />
+      <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -9" result="goo" />
+    </filter>
+    <filter id="fluid-liquid-filter">
+      <feTurbulence type="fractalNoise" baseFrequency="0.01 0.02" numOctaves="2" seed="9" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="70" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+  </svg>
+
+  <div id="background">
+    <div id="fluidStage">
+
+      <div class="fluid-scene active" id="fluid-blobs">
+        <div class="goo-wrap">
+          <div class="blob b1"></div>
+          <div class="blob b2"></div>
+          <div class="blob b3"></div>
+          <div class="blob b4"></div>
+          <div class="blob b5"></div>
+          <div class="blob b6"></div>
+        </div>
+      </div>
+
+      <div class="fluid-scene" id="fluid-metaballs">
+        <div class="goo-wrap metaballs">
+          <div class="blob mb" style="--i:0"></div>
+          <div class="blob mb" style="--i:1"></div>
+          <div class="blob mb" style="--i:2"></div>
+          <div class="blob mb" style="--i:3"></div>
+          <div class="blob mb" style="--i:4"></div>
+          <div class="blob mb" style="--i:5"></div>
+          <div class="blob mb" style="--i:6"></div>
+          <div class="blob mb" style="--i:7"></div>
+          <div class="blob mb" style="--i:8"></div>
+          <div class="blob mb" style="--i:9"></div>
+        </div>
+      </div>
+
+      <div class="fluid-scene" id="fluid-liquid">
+        <div class="liquid-gradient-layer"></div>
+      </div>
+
+      <div class="fluid-scene" id="fluid-organic">
+        <div class="organic-shape o1"></div>
+        <div class="organic-shape o2"></div>
+        <div class="organic-shape o3"></div>
+      </div>
+
+      <div class="fluid-scene" id="fluid-mouse">
+        <div class="goo-wrap">
+          <div class="blob ambient a1"></div>
+          <div class="blob ambient a2"></div>
+          <div class="blob ambient a3"></div>
+          <div class="blob cursor-blob" id="cursorBlob"></div>
+        </div>
+        <p class="hint">Move your mouse over the background</p>
+      </div>
+
+      <div class="fluid-scene" id="fluid-colorflow">
+        <canvas id="flowCanvas"></canvas>
+      </div>
+
+    </div>
+  </div>
+  <div id="cursorSpotlight"></div>
+
+  <nav class="navbar">
+    <div class="nav-brand">Background Lab</div>
+    <div class="nav-links">
+      <a href="01-particles.html">Particles</a>
+      <a href="02-aurora.html">Aurora</a>
+      <a href="03-gradient.html">Gradient</a>
+      <a href="04-waves.html">Waves</a>
+      <a href="05-fluid.html" class="active">Fluid</a>
+      <a href="06-canvas.html">Canvas</a>
+      <a href="07-webgl.html">WebGL</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="content-card glass">
+      <h1>Background Laboratory</h1>
+      <p class="subtitle">Explore modern animated backgrounds</p>
+      <p class="tag">Fluid • CSS Goo + Canvas + Vanilla JS</p>
+      <button class="btn-demo">View Demo</button>
+    </div>
+
+    <div class="style-selector" id="styleSelector">
+      <button class="style-btn active" data-style="blobs">Fluid Blobs</button>
+      <button class="style-btn" data-style="metaballs">Metaballs</button>
+      <button class="style-btn" data-style="liquid">Liquid Gradient</button>
+      <button class="style-btn" data-style="organic">Organic Blobs</button>
+      <button class="style-btn" data-style="mouse">Mouse Interaction</button>
+      <button class="style-btn" data-style="colorflow">Color-flow Simulation</button>
+    </div>
+  </main>
+
+  <script>
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const scenes = document.querySelectorAll('.fluid-scene');
+    const cursorBlob = document.getElementById('cursorBlob');
+    let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+    let curX = mouseX, curY = mouseY;
+    let mouseRAF = null;
+    let flowRAF = null;
+
+    // Cursor spotlight glow + click ripple burst + glass card tilt
+    const spotlightEl = document.getElementById('cursorSpotlight');
+    window.addEventListener('mousemove', (e) => {
+      spotlightEl.style.setProperty('--spot-x', `${e.clientX}px`);
+      spotlightEl.style.setProperty('--spot-y', `${e.clientY}px`);
+      spotlightEl.classList.add('visible');
+    });
+    window.addEventListener('mouseleave', () => spotlightEl.classList.remove('visible'));
+
+    document.addEventListener('click', (e) => {
+      if (reducedMotion) return;
+      const ripple = document.createElement('div');
+      ripple.className = 'click-ripple';
+      ripple.style.left = `${e.clientX}px`;
+      ripple.style.top = `${e.clientY}px`;
+      document.body.appendChild(ripple);
+      ripple.addEventListener('animationend', () => ripple.remove());
+    });
+
+    const tiltCard = document.querySelector('.content-card.glass');
+    tiltCard.addEventListener('mousemove', (e) => {
+      if (reducedMotion) return;
+      const rect = tiltCard.getBoundingClientRect();
+      const px = (e.clientX - rect.left) / rect.width - 0.5;
+      const py = (e.clientY - rect.top) / rect.height - 0.5;
+      tiltCard.style.transform = `rotateX(${(-py * 10).toFixed(2)}deg) rotateY(${(px * 10).toFixed(2)}deg) translateY(-4px)`;
+    });
+    tiltCard.addEventListener('mouseleave', () => {
+      tiltCard.style.transform = 'rotateX(0deg) rotateY(0deg) translateY(0)';
+    });
+
+    // Subtle background parallax that follows the cursor (independent of the active style)
+    const bgEl = document.getElementById('background');
+    let parX = 0, parY = 0, parallaxRAF = null;
+    function parallaxLoop () {
+      const tx = (mouseX / window.innerWidth - 0.5) * -30;
+      const ty = (mouseY / window.innerHeight - 0.5) * -30;
+      parX += (tx - parX) * 0.06;
+      parY += (ty - parY) * 0.06;
+      bgEl.style.transform = `translate(${parX.toFixed(2)}px, ${parY.toFixed(2)}px)`;
+      parallaxRAF = requestAnimationFrame(parallaxLoop);
+    }
+    if (!reducedMotion) parallaxRAF = requestAnimationFrame(parallaxLoop);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) { if (parallaxRAF) { cancelAnimationFrame(parallaxRAF); parallaxRAF = null; } }
+      else if (!parallaxRAF && !reducedMotion) { parallaxRAF = requestAnimationFrame(parallaxLoop); }
+    });
+
+    function setStyle (name) {
+      scenes.forEach((s) => s.classList.toggle('active', s.id === `fluid-${name}`));
+      if (name === 'mouse') startMouseFollow(); else stopMouseFollow();
+      if (name === 'colorflow') startFlow(); else stopFlow();
+    }
+
+    document.getElementById('styleSelector').addEventListener('click', (e) => {
+      const btn = e.target.closest('.style-btn');
+      if (!btn) return;
+      document.querySelectorAll('.style-btn').forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      setStyle(btn.dataset.style);
+    });
+
+    window.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+
+    function mouseLoop () {
+      curX += (mouseX - curX) * 0.08;
+      curY += (mouseY - curY) * 0.08;
+      cursorBlob.style.transform = `translate(${curX - 90}px, ${curY - 90}px)`;
+      mouseRAF = requestAnimationFrame(mouseLoop);
+    }
+
+    function startMouseFollow () {
+      if (mouseRAF || reducedMotion) return;
+      mouseLoop();
+    }
+
+    function stopMouseFollow () {
+      if (mouseRAF) { cancelAnimationFrame(mouseRAF); mouseRAF = null; }
+    }
+
+    // Color-flow simulation on canvas
+    const canvas = document.getElementById('flowCanvas');
+    const ctx = canvas.getContext('2d');
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let width = 0, height = 0, tFlow = 0;
+    let flowParticles = [];
+
+    function resizeFlow () {
+      width = canvas.clientWidth;
+      height = canvas.clientHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.fillStyle = '#0a0a12';
+      ctx.fillRect(0, 0, width, height);
+    }
+
+    function initFlowParticles () {
+      flowParticles = Array.from({ length: 140 }, () => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        hue: Math.random() * 360
+      }));
+    }
+
+    function drawFlow () {
+      ctx.fillStyle = 'rgba(10, 10, 18, 0.06)';
+      ctx.fillRect(0, 0, width, height);
+      flowParticles.forEach((p) => {
+        const angle = Math.sin(p.x * 0.006 + tFlow) + Math.cos(p.y * 0.006 - tFlow);
+        const flowVx = Math.cos(angle) * 1.4;
+        const flowVy = Math.sin(angle) * 1.4;
+
+        // Slowly steer every particle toward the cursor, blended with the ambient flow field
+        const dx = mouseX - p.x;
+        const dy = mouseY - p.y;
+        const dist = Math.max(Math.hypot(dx, dy), 1);
+        const pullVx = (dx / dist) * 1.4;
+        const pullVy = (dy / dist) * 1.4;
+
+        p.x += flowVx * 0.5 + pullVx * 0.5;
+        p.y += flowVy * 0.5 + pullVy * 0.5;
+        if (p.x < 0) p.x = width; if (p.x > width) p.x = 0;
+        if (p.y < 0) p.y = height; if (p.y > height) p.y = 0;
+        ctx.fillStyle = `hsla(${(p.hue + tFlow * 20) % 360}, 85%, 65%, 0.8)`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 1.6, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      tFlow += 0.01;
+    }
+
+    function flowLoop () {
+      drawFlow();
+      flowRAF = requestAnimationFrame(flowLoop);
+    }
+
+    function startFlow () {
+      if (flowRAF) return;
+      resizeFlow();
+      initFlowParticles();
+      if (reducedMotion) { drawFlow(); return; }
+      flowLoop();
+    }
+
+    function stopFlow () {
+      if (flowRAF) { cancelAnimationFrame(flowRAF); flowRAF = null; }
+    }
+
+    window.addEventListener('resize', () => {
+      if (document.getElementById('fluid-colorflow').classList.contains('active')) resizeFlow();
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) { stopFlow(); stopMouseFollow(); }
+      else {
+        if (document.getElementById('fluid-colorflow').classList.contains('active')) startFlow();
+        if (document.getElementById('fluid-mouse').classList.contains('active')) startMouseFollow();
+      }
+    });
+  </script>
+</body>
+
+</html>

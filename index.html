@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Background Lab — Animated Background Showcase</title>
+  <meta name="description" content="A vanilla HTML/CSS/JS showcase of animated background techniques: particles, aurora, gradients, waves, fluid, canvas and WebGL." />
+  <link rel="stylesheet" href="index.css" />
+</head>
+
+<body>
+
+  <div id="background"></div>
+  <div id="cursorSpotlight"></div>
+
+  <header class="hero">
+    <p class="eyebrow">Free &amp; Open Source</p>
+    <h1>Background Lab</h1>
+    <p class="lead">
+      A collection of production-quality animated backgrounds built with plain HTML, CSS and vanilla JavaScript —
+      no frameworks, no build step, no npm. Copy any single page + its matching CSS file straight into your project.
+    </p>
+    <p class="lead-small">Drop them into a Spring Boot + Thymeleaf app, a static site, or anything that serves HTML.</p>
+  </header>
+
+  <main class="grid">
+
+    <a class="tile" href="01-particles.html">
+      <span class="tile-badge">tsParticles</span>
+      <h2>Particles</h2>
+      <p>Classic, network, snow, bubble, galaxy &amp; neon particle fields.</p>
+      <span class="tile-cta">View demo →</span>
+    </a>
+
+    <a class="tile" href="02-aurora.html">
+      <span class="tile-badge">CSS + JS</span>
+      <h2>Aurora</h2>
+      <p>Six drifting, curtain-like aurora color palettes and motion styles.</p>
+      <span class="tile-cta">View demo →</span>
+    </a>
+
+    <a class="tile" href="03-gradient.html">
+      <span class="tile-badge">CSS + SVG filters</span>
+      <h2>Gradient</h2>
+      <p>Mesh, blob, linear, radial, liquid and multi-color animated gradients.</p>
+      <span class="tile-cta">View demo →</span>
+    </a>
+
+    <a class="tile" href="04-waves.html">
+      <span class="tile-badge">SVG + Canvas</span>
+      <h2>Waves</h2>
+      <p>Layered, ocean, gradient, jagged and flowing wave animations.</p>
+      <span class="tile-cta">View demo →</span>
+    </a>
+
+    <a class="tile" href="05-fluid.html">
+      <span class="tile-badge">CSS Goo + Canvas</span>
+      <h2>Fluid</h2>
+      <p>Metaballs, organic blobs, liquid gradients and mouse-reactive flow fields.</p>
+      <span class="tile-cta">View demo →</span>
+    </a>
+
+    <a class="tile" href="06-canvas.html">
+      <span class="tile-badge">Canvas API</span>
+      <h2>Canvas</h2>
+      <p>Flow fields, particle trails, generative lines, noise fields and more.</p>
+      <span class="tile-cta">View demo →</span>
+    </a>
+
+    <a class="tile" href="07-webgl.html">
+      <span class="tile-badge">Three.js</span>
+      <h2>WebGL</h2>
+      <p>Six GLSL shader backgrounds: gradient, noise, liquid, wave, blobs, mouse.</p>
+      <span class="tile-cta">View demo →</span>
+    </a>
+
+  </main>
+
+  <footer class="footer">
+    <p>MIT licensed — free to use in personal and commercial projects. See <a href="DESIGN-CATALOG.md">DESIGN-CATALOG.md</a> for the full roadmap of planned styles.</p>
+  </footer>
+
+  <script>
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const spotlightEl = document.getElementById('cursorSpotlight');
+    window.addEventListener('mousemove', (e) => {
+      spotlightEl.style.setProperty('--spot-x', `${e.clientX}px`);
+      spotlightEl.style.setProperty('--spot-y', `${e.clientY}px`);
+      spotlightEl.classList.add('visible');
+    });
+    window.addEventListener('mouseleave', () => spotlightEl.classList.remove('visible'));
+
+    const bgEl = document.getElementById('background');
+    let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+    let parX = 0, parY = 0, parallaxRAF = null;
+    window.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+    function parallaxLoop() {
+      const tx = (mouseX / window.innerWidth - 0.5) * -20;
+      const ty = (mouseY / window.innerHeight - 0.5) * -20;
+      parX += (tx - parX) * 0.06;
+      parY += (ty - parY) * 0.06;
+      bgEl.style.transform = `translate(${parX.toFixed(2)}px, ${parY.toFixed(2)}px)`;
+      parallaxRAF = requestAnimationFrame(parallaxLoop);
+    }
+    if (!reducedMotion) parallaxRAF = requestAnimationFrame(parallaxLoop);
+  </script>
+</body>
+
+</html>

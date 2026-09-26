@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Background Lab — Gradient</title>
+  <link rel="stylesheet" href="03-gradient.css" />
+</head>
+
+<body>
+
+  <svg width="0" height="0" style="position:absolute">
+    <filter id="liquid-filter">
+      <feTurbulence id="liquidTurbulence" type="fractalNoise" baseFrequency="0.008 0.015" numOctaves="2" seed="5"
+        result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="60" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+  </svg>
+
+  <div id="background">
+    <div id="gradientStage" class="gradient-mesh"></div>
+  </div>
+  <div id="cursorSpotlight"></div>
+
+  <nav class="navbar">
+    <div class="nav-brand">Background Lab</div>
+    <div class="nav-links">
+      <a href="01-particles.html">Particles</a>
+      <a href="02-aurora.html">Aurora</a>
+      <a href="03-gradient.html" class="active">Gradient</a>
+      <a href="04-waves.html">Waves</a>
+      <a href="05-fluid.html">Fluid</a>
+      <a href="06-canvas.html">Canvas</a>
+      <a href="07-webgl.html">WebGL</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="content-card glass">
+      <h1>Background Laboratory</h1>
+      <p class="subtitle">Explore modern animated backgrounds</p>
+      <p class="tag">Gradient • CSS + Vanilla JS</p>
+      <button class="btn-demo">View Demo</button>
+    </div>
+
+    <div class="style-selector" id="styleSelector">
+      <button class="style-btn active" data-style="mesh">Mesh Gradient</button>
+      <button class="style-btn" data-style="blob">Blob Gradient</button>
+      <button class="style-btn" data-style="linear">Linear Gradient</button>
+      <button class="style-btn" data-style="radial">Radial Gradient</button>
+      <button class="style-btn" data-style="liquid">Liquid Gradient</button>
+      <button class="style-btn" data-style="multicolor">Multi-color Gradient</button>
+    </div>
+  </main>
+
+  <script>
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const stage = document.getElementById('gradientStage');
+    const classes = [ 'gradient-mesh', 'gradient-blob', 'gradient-linear', 'gradient-radial', 'gradient-liquid', 'gradient-multicolor' ];
+
+    // Cursor spotlight glow + click ripple burst + glass card tilt
+    const spotlightEl = document.getElementById('cursorSpotlight');
+    window.addEventListener('mousemove', (e) => {
+      spotlightEl.style.setProperty('--spot-x', `${e.clientX}px`);
+      spotlightEl.style.setProperty('--spot-y', `${e.clientY}px`);
+      spotlightEl.classList.add('visible');
+    });
+    window.addEventListener('mouseleave', () => spotlightEl.classList.remove('visible'));
+
+    document.addEventListener('click', (e) => {
+      if (reducedMotion) return;
+      const ripple = document.createElement('div');
+      ripple.className = 'click-ripple';
+      ripple.style.left = `${e.clientX}px`;
+      ripple.style.top = `${e.clientY}px`;
+      document.body.appendChild(ripple);
+      ripple.addEventListener('animationend', () => ripple.remove());
+    });
+
+    const tiltCard = document.querySelector('.content-card.glass');
+    tiltCard.addEventListener('mousemove', (e) => {
+      if (reducedMotion) return;
+      const rect = tiltCard.getBoundingClientRect();
+      const px = (e.clientX - rect.left) / rect.width - 0.5;
+      const py = (e.clientY - rect.top) / rect.height - 0.5;
+      tiltCard.style.transform = `rotateX(${(-py * 10).toFixed(2)}deg) rotateY(${(px * 10).toFixed(2)}deg) translateY(-4px)`;
+    });
+    tiltCard.addEventListener('mouseleave', () => {
+      tiltCard.style.transform = 'rotateX(0deg) rotateY(0deg) translateY(0)';
+    });
+
+    // Subtle background parallax that follows the cursor
+    const bgEl = document.getElementById('background');
+    let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+    let parX = 0, parY = 0, parallaxRAF = null;
+    window.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+    function parallaxLoop () {
+      const tx = (mouseX / window.innerWidth - 0.5) * -30;
+      const ty = (mouseY / window.innerHeight - 0.5) * -30;
+      parX += (tx - parX) * 0.06;
+      parY += (ty - parY) * 0.06;
+      bgEl.style.transform = `translate(${parX.toFixed(2)}px, ${parY.toFixed(2)}px)`;
+      parallaxRAF = requestAnimationFrame(parallaxLoop);
+    }
+    if (!reducedMotion) parallaxRAF = requestAnimationFrame(parallaxLoop);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) { if (parallaxRAF) { cancelAnimationFrame(parallaxRAF); parallaxRAF = null; } }
+      else if (!parallaxRAF && !reducedMotion) { parallaxRAF = requestAnimationFrame(parallaxLoop); }
+    });
+
+    function setStyle (name) {
+      stage.classList.remove(...classes);
+      stage.classList.add(`gradient-${name}`);
+    }
+
+    document.getElementById('styleSelector').addEventListener('click', (e) => {
+      const btn = e.target.closest('.style-btn');
+      if (!btn) return;
+      document.querySelectorAll('.style-btn').forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      setStyle(btn.dataset.style);
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      stage.style.animationPlayState = document.hidden ? 'paused' : 'running';
+    });
+  </script>
+</body>
+
+</html>

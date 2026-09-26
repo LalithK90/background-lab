@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Background Lab — WebGL</title>
+  <link rel="stylesheet" href="07-webgl.css" />
+</head>
+
+<body>
+
+  <div id="background"><canvas id="glCanvas"></canvas></div>
+  <div id="cursorSpotlight"></div>
+
+  <nav class="navbar">
+    <div class="nav-brand">Background Lab</div>
+    <div class="nav-links">
+      <a href="01-particles.html">Particles</a>
+      <a href="02-aurora.html">Aurora</a>
+      <a href="03-gradient.html">Gradient</a>
+      <a href="04-waves.html">Waves</a>
+      <a href="05-fluid.html">Fluid</a>
+      <a href="06-canvas.html">Canvas</a>
+      <a href="07-webgl.html" class="active">WebGL</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="content-card glass">
+      <h1>Background Laboratory</h1>
+      <p class="subtitle">Explore modern animated backgrounds</p>
+      <p class="tag">WebGL • Three.js</p>
+      <button class="btn-demo">View Demo</button>
+    </div>
+
+    <div class="style-selector" id="styleSelector">
+      <button class="style-btn active" data-style="gradientShader">Gradient Shader</button>
+      <button class="style-btn" data-style="noiseShader">Noise Shader</button>
+      <button class="style-btn" data-style="liquidShader">Liquid Shader</button>
+      <button class="style-btn" data-style="waveShader">Wave Shader</button>
+      <button class="style-btn" data-style="blobsShader">Organic Blobs</button>
+      <button class="style-btn" data-style="mouseShader">Interactive Mouse</button>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+  <script>
+    (() => {
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const canvas = document.getElementById('glCanvas');
+      const container = document.getElementById('background');
+
+      // Cursor spotlight glow + click ripple burst + glass card tilt
+      const spotlightEl = document.getElementById('cursorSpotlight');
+      window.addEventListener('mousemove', (e) => {
+        spotlightEl.style.setProperty('--spot-x', `${e.clientX}px`);
+        spotlightEl.style.setProperty('--spot-y', `${e.clientY}px`);
+        spotlightEl.classList.add('visible');
+      });
+      window.addEventListener('mouseleave', () => spotlightEl.classList.remove('visible'));
+
+      document.addEventListener('click', (e) => {
+        if (reducedMotion) return;
+        const ripple = document.createElement('div');
+        ripple.className = 'click-ripple';
+        ripple.style.left = `${e.clientX}px`;
+        ripple.style.top = `${e.clientY}px`;
+        document.body.appendChild(ripple);
+        ripple.addEventListener('animationend', () => ripple.remove());
+      });
+
+      const tiltCard = document.querySelector('.content-card.glass');
+      tiltCard.addEventListener('mousemove', (e) => {
+        if (reducedMotion) return;
+        const rect = tiltCard.getBoundingClientRect();
+        const px = (e.clientX - rect.left) / rect.width - 0.5;
+        const py = (e.clientY - rect.top) / rect.height - 0.5;
+        tiltCard.style.transform = `rotateX(${(-py * 10).toFixed(2)}deg) rotateY(${(px * 10).toFixed(2)}deg) translateY(-4px)`;
+      });
+      tiltCard.addEventListener('mouseleave', () => {
+        tiltCard.style.transform = 'rotateX(0deg) rotateY(0deg) translateY(0)';
+      });
+
+      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+      const vertexShader = `
+    varying vec2 vUv;
+    void main() {
+      vUv = uv;
+      gl_Position = vec4(position, 1.0);
+    }
+  `;
+
+      const shaders = {
+        gradientShader: `
+      varying vec2 vUv;
+      uniform float u_time;
+      void main() {
+        vec2 uv = vUv;
+        vec3 colorA = vec3(0.13, 0.09, 0.45);
+        vec3 colorB = vec3(0.86, 0.28, 0.55);
+        float mixVal = uv.y + 0.15 * sin(uv.x * 3.0 + u_time * 0.4);
+        vec3 col = mix(colorA, colorB, clamp(mixVal, 0.0, 1.0));
+        gl_FragColor = vec4(col, 1.0);
+      }
+    `,
+        noiseShader: `
+      varying vec2 vUv;
+      uniform float u_time;
+      float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123); }
+      float valueNoise(vec2 p) {
+        vec2 i = floor(p); vec2 f = fract(p);
+        float a = hash(i), b = hash(i + vec2(1.0, 0.0));
+        float c = hash(i + vec2(0.0, 1.0)), d = hash(i + vec2(1.0, 1.0));
+        vec2 u = f * f * (3.0 - 2.0 * f);
+        return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
+      }
+      void main() {
+        vec2 uv = vUv * 4.0;
+        float n = valueNoise(uv + u_time * 0.15);
+        n += 0.5 * valueNoise(uv * 2.0 - u_time * 0.1);
+        vec3 col = mix(vec3(0.02, 0.02, 0.08), vec3(0.3, 0.6, 0.9), n * 0.6);
+        gl_FragColor = vec4(col, 1.0);
+      }
+    `,
+        liquidShader: `
+      varying vec2 vUv;
+      uniform float u_time;
+      void main() {
+        vec2 p = vUv * 3.0;
+        for (int i = 0; i < 3; i++) {
+          p += vec2(sin(p.y + u_time * 0.5), cos(p.x + u_time * 0.4)) * 0.35;
+        }
+        float pattern = sin(p.x + p.y);
+        vec3 col = mix(vec3(0.05, 0.1, 0.3), vec3(0.9, 0.3, 0.7), pattern * 0.5 + 0.5);
+        gl_FragColor = vec4(col, 1.0);
+      }
+    `,
+        waveShader: `
+      varying vec2 vUv;
+      uniform float u_time;
+      void main() {
+        vec2 uv = vUv;
+        float wave = sin(uv.x * 10.0 + u_time * 1.5) * 0.05 + sin(uv.x * 4.0 - u_time * 0.8) * 0.08;
+        float d = smoothstep(0.02, 0.0, abs(uv.y - 0.5 - wave));
+        vec3 base = mix(vec3(0.02, 0.02, 0.08), vec3(0.05, 0.15, 0.35), uv.y);
+        vec3 col = mix(base, vec3(0.3, 0.7, 1.0), d);
+        gl_FragColor = vec4(col, 1.0);
+      }
+    `,
+        blobsShader: `
+      varying vec2 vUv;
+      uniform float u_time;
+      uniform vec2 u_resolution;
+      float smin(float a, float b, float k) {
+        float h = clamp(0.5 + 0.5 * (b - a) / k, 0.0, 1.0);
+        return mix(b, a, h) - k * h * (1.0 - h);
+      }
+      void main() {
+        vec2 uv = (vUv - 0.5) * 2.0;
+        uv.x *= u_resolution.x / u_resolution.y;
+        float d1 = length(uv - vec2(sin(u_time * 0.6) * 0.5, cos(u_time * 0.5) * 0.3)) - 0.3;
+        float d2 = length(uv - vec2(cos(u_time * 0.4) * 0.4, sin(u_time * 0.7) * 0.4)) - 0.25;
+        float d3 = length(uv - vec2(sin(u_time * 0.3 + 1.0) * 0.3, cos(u_time * 0.6 + 2.0) * 0.35)) - 0.28;
+        float d = smin(smin(d1, d2, 0.3), d3, 0.3);
+        float glow = smoothstep(0.05, -0.05, d);
+        vec3 col = mix(vec3(0.03, 0.02, 0.08), vec3(0.5, 0.3, 0.9), glow);
+        gl_FragColor = vec4(col, 1.0);
+      }
+    `,
+        mouseShader: `
+      varying vec2 vUv;
+      uniform float u_time;
+      uniform vec2 u_mouse;
+      void main() {
+        vec2 uv = vUv;
+        float dist = distance(uv, u_mouse);
+        float ripple = sin(dist * 30.0 - u_time * 3.0) * 0.5 + 0.5;
+        float falloff = smoothstep(0.6, 0.0, dist);
+        vec3 col = mix(vec3(0.02, 0.02, 0.08), vec3(0.1, 0.7, 0.9), ripple * falloff);
+        col += vec3(0.2, 0.1, 0.4) * (1.0 - falloff) * 0.3;
+        gl_FragColor = vec4(col, 1.0);
+      }
+    `
+      };
+
+      const uniforms = {
+        u_time: { value: 0 },
+        u_resolution: { value: new THREE.Vector2(1, 1) },
+        u_mouse: { value: new THREE.Vector2(0.5, 0.5) }
+      };
+
+      let material = null;
+      let mesh = null;
+
+      function setShader (name) {
+        if (mesh) { scene.remove(mesh); mesh.geometry.dispose(); material.dispose(); }
+        material = new THREE.ShaderMaterial({ vertexShader, fragmentShader: shaders[ name ], uniforms });
+        const geometry = new THREE.PlaneGeometry(2, 2);
+        mesh = new THREE.Mesh(geometry, material);
+        scene.add(mesh);
+      }
+
+      function resize () {
+        const w = container.clientWidth;
+        const h = container.clientHeight;
+        renderer.setSize(w, h, false);
+        uniforms.u_resolution.value.set(w, h);
+      }
+
+      // Subtle background parallax that follows the cursor, alongside the shader's own mouse uniform
+      let parX = 0, parY = 0;
+      function updateParallax () {
+        const tx = (uniforms.u_mouse.value.x - 0.5) * -30;
+        const ty = (uniforms.u_mouse.value.y - 0.5) * 30;
+        parX += (tx - parX) * 0.06;
+        parY += (ty - parY) * 0.06;
+        container.style.transform = `translate(${parX.toFixed(2)}px, ${parY.toFixed(2)}px)`;
+      }
+
+      window.addEventListener('resize', resize);
+      window.addEventListener('mousemove', (e) => {
+        uniforms.u_mouse.value.set(e.clientX / window.innerWidth, 1 - e.clientY / window.innerHeight);
+      });
+
+      let rafId = null;
+      let clockStart = performance.now();
+
+      function loop (now) {
+        uniforms.u_time.value = (now - clockStart) / 1000;
+        if (!reducedMotion) updateParallax();
+        renderer.render(scene, camera);
+        rafId = requestAnimationFrame(loop);
+      }
+
+      function start () {
+        resize();
+        if (rafId) cancelAnimationFrame(rafId);
+        if (reducedMotion) { renderer.render(scene, camera); return; }
+        rafId = requestAnimationFrame(loop);
+      }
+
+      document.getElementById('styleSelector').addEventListener('click', (e) => {
+        const btn = e.target.closest('.style-btn');
+        if (!btn) return;
+        document.querySelectorAll('.style-btn').forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        setShader(btn.dataset.style);
+      });
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) { if (rafId) { cancelAnimationFrame(rafId); rafId = null; } }
+        else if (!rafId && !reducedMotion) { rafId = requestAnimationFrame(loop); }
+      });
+
+      setShader('gradientShader');
+      start();
+    })();
+  </script>
+</body>
+
+</html>

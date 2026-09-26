@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Background Lab — Aurora</title>
+  <link rel="stylesheet" href="02-aurora.css" />
+</head>
+
+<body>
+
+  <div id="background">
+    <div id="auroraStage"></div>
+  </div>
+  <div id="cursorSpotlight"></div>
+
+  <nav class="navbar">
+    <div class="nav-brand">Background Lab</div>
+    <div class="nav-links">
+      <a href="01-particles.html">Particles</a>
+      <a href="02-aurora.html" class="active">Aurora</a>
+      <a href="03-gradient.html">Gradient</a>
+      <a href="04-waves.html">Waves</a>
+      <a href="05-fluid.html">Fluid</a>
+      <a href="06-canvas.html">Canvas</a>
+      <a href="07-webgl.html">WebGL</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="content-card glass">
+      <h1>Background Laboratory</h1>
+      <p class="subtitle">Explore modern animated backgrounds</p>
+      <p class="tag">Aurora • CSS + Vanilla JS</p>
+      <button class="btn-demo">View Demo</button>
+    </div>
+
+    <div class="style-selector" id="styleSelector">
+      <button class="style-btn active" data-style="purple">Purple Aurora</button>
+      <button class="style-btn" data-style="ocean">Ocean Aurora</button>
+      <button class="style-btn" data-style="sunset">Sunset Aurora</button>
+      <button class="style-btn" data-style="emerald">Emerald Aurora</button>
+      <button class="style-btn" data-style="northern">Northern Lights</button>
+      <button class="style-btn" data-style="neon">Neon Aurora</button>
+    </div>
+  </main>
+
+  <script>
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const stage = document.getElementById('auroraStage');
+
+    // Cursor spotlight glow + click ripple burst + glass card tilt
+    const spotlightEl = document.getElementById('cursorSpotlight');
+    window.addEventListener('mousemove', (e) => {
+      spotlightEl.style.setProperty('--spot-x', `${e.clientX}px`);
+      spotlightEl.style.setProperty('--spot-y', `${e.clientY}px`);
+      spotlightEl.classList.add('visible');
+    });
+    window.addEventListener('mouseleave', () => spotlightEl.classList.remove('visible'));
+
+    document.addEventListener('click', (e) => {
+      if (reducedMotion) return;
+      const ripple = document.createElement('div');
+      ripple.className = 'click-ripple';
+      ripple.style.left = `${e.clientX}px`;
+      ripple.style.top = `${e.clientY}px`;
+      document.body.appendChild(ripple);
+      ripple.addEventListener('animationend', () => ripple.remove());
+    });
+
+    const tiltCard = document.querySelector('.content-card.glass');
+    tiltCard.addEventListener('mousemove', (e) => {
+      if (reducedMotion) return;
+      const rect = tiltCard.getBoundingClientRect();
+      const px = (e.clientX - rect.left) / rect.width - 0.5;
+      const py = (e.clientY - rect.top) / rect.height - 0.5;
+      tiltCard.style.transform = `rotateX(${(-py * 10).toFixed(2)}deg) rotateY(${(px * 10).toFixed(2)}deg) translateY(-4px)`;
+    });
+    tiltCard.addEventListener('mouseleave', () => {
+      tiltCard.style.transform = 'rotateX(0deg) rotateY(0deg) translateY(0)';
+    });
+
+    // Subtle background parallax that follows the cursor
+    const bgEl = document.getElementById('background');
+    let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+    let parX = 0, parY = 0, parallaxRAF = null;
+    window.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+    function parallaxLoop () {
+      const tx = (mouseX / window.innerWidth - 0.5) * -30;
+      const ty = (mouseY / window.innerHeight - 0.5) * -30;
+      parX += (tx - parX) * 0.06;
+      parY += (ty - parY) * 0.06;
+      bgEl.style.transform = `translate(${parX.toFixed(2)}px, ${parY.toFixed(2)}px)`;
+      parallaxRAF = requestAnimationFrame(parallaxLoop);
+    }
+    if (!reducedMotion) parallaxRAF = requestAnimationFrame(parallaxLoop);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) { if (parallaxRAF) { cancelAnimationFrame(parallaxRAF); parallaxRAF = null; } }
+      else if (!parallaxRAF && !reducedMotion) { parallaxRAF = requestAnimationFrame(parallaxLoop); }
+    });
+
+    const styles = {
+      purple: { colors: [ '#7c3aed', '#4c1d95', '#a78bfa' ], count: 4, duration: 18, blur: 80, motion: 'float' },
+      ocean: { colors: [ '#0ea5e9', '#06b6d4', '#0f766e' ], count: 5, duration: 26, blur: 100, motion: 'drift' },
+      sunset: { colors: [ '#f472b6', '#fb923c', '#a855f7' ], count: 4, duration: 12, blur: 70, motion: 'pulse' },
+      emerald: { colors: [ '#10b981', '#22d3ee', '#1e3a8a' ], count: 3, duration: 32, blur: 110, motion: 'float' },
+      northern: { colors: [ '#34d399', '#22d3ee', '#3b82f6' ], count: 6, duration: 20, blur: 90, motion: 'curtain' },
+      neon: { colors: [ '#a855f7', '#ec4899', '#22d3ee' ], count: 5, duration: 9, blur: 60, motion: 'drift' }
+    };
+
+    function renderAurora (name) {
+      const cfg = styles[ name ];
+      stage.innerHTML = '';
+      for (let i = 0; i < cfg.count; i++) {
+        const blob = document.createElement('div');
+        blob.className = `aurora-blob motion-${cfg.motion}`;
+        const color = cfg.colors[ i % cfg.colors.length ];
+        const size = 260 + Math.random() * 220;
+        blob.style.setProperty('--blob-color', color);
+        blob.style.setProperty('--blob-size', `${size}px`);
+        blob.style.setProperty('--blob-blur', `${cfg.blur}px`);
+        blob.style.setProperty('--blob-duration', reducedMotion ? '0s' : `${cfg.duration + i * 2}s`);
+        blob.style.setProperty('--blob-delay', `${i * -3}s`);
+        blob.style.left = `${Math.random() * 80}%`;
+        blob.style.top = `${Math.random() * 70}%`;
+        stage.appendChild(blob);
+      }
+    }
+
+    document.getElementById('styleSelector').addEventListener('click', (e) => {
+      const btn = e.target.closest('.style-btn');
+      if (!btn) return;
+      document.querySelectorAll('.style-btn').forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderAurora(btn.dataset.style);
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      stage.style.animationPlayState = document.hidden ? 'paused' : 'running';
+      stage.querySelectorAll('.aurora-blob').forEach((b) => {
+        b.style.animationPlayState = document.hidden ? 'paused' : 'running';
+      });
+    });
+
+    renderAurora('purple');
+  </script>
+</body>
+
+</html>

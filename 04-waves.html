@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Background Lab — Waves</title>
+  <link rel="stylesheet" href="04-waves.css" />
+</head>
+
+<body>
+
+  <div id="background">
+    <div id="wavesStage">
+
+      <div class="wave-scene active" id="wave-simple">
+        <div class="wave-track" style="animation-duration: 14s;">
+          <svg viewBox="0 0 2400 200" preserveAspectRatio="none">
+            <path class="wave-fill c-simple"
+              d="M0,100 C150,150 350,50 600,100 C850,150 1050,50 1200,100 L1200,200 L0,200 Z" />
+            <path class="wave-fill c-simple"
+              d="M1200,100 C1350,150 1550,50 1800,100 C2050,150 2250,50 2400,100 L2400,200 L1200,200 Z" />
+          </svg>
+        </div>
+      </div>
+
+      <div class="wave-scene" id="wave-multilayer">
+        <div class="wave-track wave-back" style="animation-duration: 26s;">
+          <svg viewBox="0 0 2400 200" preserveAspectRatio="none">
+            <path class="wave-fill c-back"
+              d="M0,110 C150,160 350,60 600,110 C850,160 1050,60 1200,110 L1200,200 L0,200 Z" />
+            <path class="wave-fill c-back"
+              d="M1200,110 C1350,160 1550,60 1800,110 C2050,160 2250,60 2400,110 L2400,200 L1200,200 Z" />
+          </svg>
+        </div>
+        <div class="wave-track wave-mid" style="animation-duration: 18s;">
+          <svg viewBox="0 0 2400 200" preserveAspectRatio="none">
+            <path class="wave-fill c-mid"
+              d="M0,120 C150,170 350,70 600,120 C850,170 1050,70 1200,120 L1200,200 L0,200 Z" />
+            <path class="wave-fill c-mid"
+              d="M1200,120 C1350,170 1550,70 1800,120 C2050,170 2250,70 2400,120 L2400,200 L1200,200 Z" />
+          </svg>
+        </div>
+        <div class="wave-track wave-front" style="animation-duration: 10s;">
+          <svg viewBox="0 0 2400 200" preserveAspectRatio="none">
+            <path class="wave-fill c-front"
+              d="M0,140 C150,190 350,90 600,140 C850,190 1050,90 1200,140 L1200,200 L0,200 Z" />
+            <path class="wave-fill c-front"
+              d="M1200,140 C1350,190 1550,90 1800,140 C2050,190 2250,90 2400,140 L2400,200 L1200,200 Z" />
+          </svg>
+        </div>
+      </div>
+
+      <div class="wave-scene" id="wave-ocean">
+        <div class="wave-track wave-back" style="animation-duration: 22s;">
+          <svg viewBox="0 0 2400 200" preserveAspectRatio="none">
+            <path class="wave-fill c-ocean-deep"
+              d="M0,110 C150,150 350,70 600,110 C850,150 1050,70 1200,110 L1200,200 L0,200 Z" />
+            <path class="wave-fill c-ocean-deep"
+              d="M1200,110 C1350,150 1550,70 1800,110 C2050,150 2250,70 2400,110 L2400,200 L1200,200 Z" />
+          </svg>
+        </div>
+        <div class="wave-track wave-front" style="animation-duration: 9s;">
+          <svg viewBox="0 0 2400 200" preserveAspectRatio="none">
+            <path class="wave-fill c-ocean-light"
+              d="M0,130 C150,170 350,100 600,130 C850,170 1050,100 1200,130 L1200,200 L0,200 Z" />
+            <path class="wave-fill c-ocean-light"
+              d="M1200,130 C1350,170 1550,100 1800,130 C2050,170 2250,100 2400,130 L2400,200 L1200,200 Z" />
+          </svg>
+        </div>
+        <div class="wave-track wave-foam" style="animation-duration: 6s;">
+          <svg viewBox="0 0 2400 200" preserveAspectRatio="none">
+            <path class="wave-foam-path" d="M0,128 C150,120 350,138 600,128 C850,120 1050,138 1200,128" />
+            <path class="wave-foam-path" d="M1200,128 C1350,120 1550,138 1800,128 C2050,120 2250,138 2400,128" />
+          </svg>
+        </div>
+      </div>
+
+      <div class="wave-scene" id="wave-gradient">
+        <div class="wave-track wave-bob" style="animation-duration: 16s;">
+          <svg viewBox="0 0 2400 200" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="waveGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#8b5cf6" />
+                <stop offset="50%" stop-color="#ec4899" />
+                <stop offset="100%" stop-color="#0ea5e9" />
+              </linearGradient>
+            </defs>
+            <path fill="url(#waveGrad)"
+              d="M0,110 C150,160 350,60 600,110 C850,160 1050,60 1200,110 L1200,200 L0,200 Z" />
+            <path fill="url(#waveGrad)"
+              d="M1200,110 C1350,160 1550,60 1800,110 C2050,160 2250,60 2400,110 L2400,200 L1200,200 Z" />
+          </svg>
+        </div>
+      </div>
+
+      <div class="wave-scene" id="wave-svg">
+        <div class="wave-track" style="animation-duration: 20s;">
+          <svg viewBox="0 0 2400 200" preserveAspectRatio="none">
+            <path class="wave-fill c-jagged"
+              d="M0,120 L100,80 L200,140 L300,60 L400,130 L500,70 L600,120 L700,90 L800,150 L900,60 L1000,130 L1100,80 L1200,110 L1200,200 L0,200 Z" />
+            <path class="wave-fill c-jagged"
+              d="M1200,120 L1300,80 L1400,140 L1500,60 L1600,130 L1700,70 L1800,120 L1900,90 L2000,150 L2100,60 L2200,130 L2300,80 L2400,110 L2400,200 L1200,200 Z" />
+          </svg>
+        </div>
+      </div>
+
+      <div class="wave-scene" id="wave-flowing">
+        <canvas id="flowCanvas"></canvas>
+      </div>
+
+    </div>
+  </div>
+  <div id="cursorSpotlight"></div>
+
+  <nav class="navbar">
+    <div class="nav-brand">Background Lab</div>
+    <div class="nav-links">
+      <a href="01-particles.html">Particles</a>
+      <a href="02-aurora.html">Aurora</a>
+      <a href="03-gradient.html">Gradient</a>
+      <a href="04-waves.html" class="active">Waves</a>
+      <a href="05-fluid.html">Fluid</a>
+      <a href="06-canvas.html">Canvas</a>
+      <a href="07-webgl.html">WebGL</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="content-card glass">
+      <h1>Background Laboratory</h1>
+      <p class="subtitle">Explore modern animated backgrounds</p>
+      <p class="tag">Waves • SVG + Canvas + Vanilla JS</p>
+      <button class="btn-demo">View Demo</button>
+    </div>
+
+    <div class="style-selector" id="styleSelector">
+      <button class="style-btn active" data-style="simple">Simple Wave</button>
+      <button class="style-btn" data-style="multilayer">Multi-layer Wave</button>
+      <button class="style-btn" data-style="ocean">Ocean Wave</button>
+      <button class="style-btn" data-style="gradient">Gradient Wave</button>
+      <button class="style-btn" data-style="svg">SVG Wave</button>
+      <button class="style-btn" data-style="flowing">Animated Flowing Wave</button>
+    </div>
+  </main>
+
+  <script>
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const scenes = document.querySelectorAll('.wave-scene');
+    let flowRAF = null;
+
+    // Cursor spotlight glow + click ripple burst + glass card tilt
+    const spotlightEl = document.getElementById('cursorSpotlight');
+    window.addEventListener('mousemove', (e) => {
+      spotlightEl.style.setProperty('--spot-x', `${e.clientX}px`);
+      spotlightEl.style.setProperty('--spot-y', `${e.clientY}px`);
+      spotlightEl.classList.add('visible');
+    });
+    window.addEventListener('mouseleave', () => spotlightEl.classList.remove('visible'));
+
+    document.addEventListener('click', (e) => {
+      if (reducedMotion) return;
+      const ripple = document.createElement('div');
+      ripple.className = 'click-ripple';
+      ripple.style.left = `${e.clientX}px`;
+      ripple.style.top = `${e.clientY}px`;
+      document.body.appendChild(ripple);
+      ripple.addEventListener('animationend', () => ripple.remove());
+    });
+
+    const tiltCard = document.querySelector('.content-card.glass');
+    tiltCard.addEventListener('mousemove', (e) => {
+      if (reducedMotion) return;
+      const rect = tiltCard.getBoundingClientRect();
+      const px = (e.clientX - rect.left) / rect.width - 0.5;
+      const py = (e.clientY - rect.top) / rect.height - 0.5;
+      tiltCard.style.transform = `rotateX(${(-py * 10).toFixed(2)}deg) rotateY(${(px * 10).toFixed(2)}deg) translateY(-4px)`;
+    });
+    tiltCard.addEventListener('mouseleave', () => {
+      tiltCard.style.transform = 'rotateX(0deg) rotateY(0deg) translateY(0)';
+    });
+
+    // Subtle background parallax that follows the cursor
+    const bgEl = document.getElementById('background');
+    let parMouseX = window.innerWidth / 2, parMouseY = window.innerHeight / 2;
+    let parX = 0, parY = 0, parallaxRAF = null;
+    window.addEventListener('mousemove', (e) => { parMouseX = e.clientX; parMouseY = e.clientY; });
+    function parallaxLoop () {
+      const tx = (parMouseX / window.innerWidth - 0.5) * -30;
+      const ty = (parMouseY / window.innerHeight - 0.5) * -30;
+      parX += (tx - parX) * 0.06;
+      parY += (ty - parY) * 0.06;
+      bgEl.style.transform = `translate(${parX.toFixed(2)}px, ${parY.toFixed(2)}px)`;
+      parallaxRAF = requestAnimationFrame(parallaxLoop);
+    }
+    if (!reducedMotion) parallaxRAF = requestAnimationFrame(parallaxLoop);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) { if (parallaxRAF) { cancelAnimationFrame(parallaxRAF); parallaxRAF = null; } }
+      else if (!parallaxRAF && !reducedMotion) { parallaxRAF = requestAnimationFrame(parallaxLoop); }
+    });
+
+    function setStyle (name) {
+      scenes.forEach((s) => s.classList.toggle('active', s.id === `wave-${name}`));
+      if (name === 'flowing') startFlow();
+      else stopFlow();
+    }
+
+    document.getElementById('styleSelector').addEventListener('click', (e) => {
+      const btn = e.target.closest('.style-btn');
+      if (!btn) return;
+      document.querySelectorAll('.style-btn').forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      setStyle(btn.dataset.style);
+    });
+
+    // Canvas flowing wave
+    const canvas = document.getElementById('flowCanvas');
+    const ctx = canvas.getContext('2d');
+    let dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let width = 0, height = 0, t = 0;
+
+    function resizeCanvas () {
+      width = canvas.clientWidth;
+      height = canvas.clientHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function drawFlow () {
+      ctx.clearRect(0, 0, width, height);
+      const layers = [
+        { amp: 30, freq: 0.006, speed: 0.015, color: 'rgba(56, 189, 248, 0.35)', yOffset: 0.55 },
+        { amp: 22, freq: 0.010, speed: 0.022, color: 'rgba(139, 92, 246, 0.35)', yOffset: 0.65 },
+        { amp: 16, freq: 0.014, speed: 0.03, color: 'rgba(236, 72, 153, 0.35)', yOffset: 0.75 }
+      ];
+      layers.forEach((layer) => {
+        ctx.beginPath();
+        ctx.moveTo(0, height);
+        for (let x = 0; x <= width; x += 8) {
+          const y = height * layer.yOffset + Math.sin(x * layer.freq + t * layer.speed) * layer.amp;
+          ctx.lineTo(x, y);
+        }
+        ctx.lineTo(width, height);
+        ctx.closePath();
+        ctx.fillStyle = layer.color;
+        ctx.fill();
+      });
+      t += 1;
+    }
+
+    function flowLoop () {
+      drawFlow();
+      flowRAF = requestAnimationFrame(flowLoop);
+    }
+
+    function startFlow () {
+      if (flowRAF || reducedMotion) { if (reducedMotion) drawFlow(); return; }
+      resizeCanvas();
+      flowLoop();
+    }
+
+    function stopFlow () {
+      if (flowRAF) { cancelAnimationFrame(flowRAF); flowRAF = null; }
+    }
+
+    window.addEventListener('resize', () => { if (document.getElementById('wave-flowing').classList.contains('active')) resizeCanvas(); });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) stopFlow();
+      else if (document.getElementById('wave-flowing').classList.contains('active')) startFlow();
+    });
+  </script>
+</body>
+
+</html>
