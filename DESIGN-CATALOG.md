@@ -178,44 +178,44 @@ Mark items `[x]` as they get implemented. Items already live in the code are pre
 - [x] 4. Gradient Wave
 - [x] 5. SVG Wave
 - [x] 6. Animated Flowing Wave
-- [ ] 7. Equalizer Bars
-- [ ] 8. Skyline Silhouette
-- [ ] 9. Neon Wave Grid
-- [ ] 10. Interactive Wave
-- [ ] 11. Ribbon Wave
-- [ ] 12. Particle Wave
-- [ ] 13. Tidal Wave
-- [ ] 14. Calm Sea Wave
-- [ ] 15. Storm Wave
-- [ ] 16. Desert Dune Wave
-- [ ] 17. Silk Wave
-- [ ] 18. Sound Wave Pulse
-- [ ] 19. Retro Grid Horizon
-- [ ] 20. Aurora Wave
-- [ ] 21. Molten Wave
-- [ ] 22. Glacier Wave
-- [ ] 23. Sunset Horizon Wave
-- [ ] 24. Underwater Wave
-- [ ] 25. Wind Ripple
-- [ ] 26. Heartbeat Wave
-- [ ] 27. Radio Frequency Wave
-- [ ] 28. Cosmic Wave
-- [ ] 29. Paper Fold Wave
-- [ ] 30. Fabric Drape Wave
-- [ ] 31. Lava Flow Wave
-- [ ] 32. Ink Wave
-- [ ] 33. Crystal Wave
-- [ ] 34. Bamboo Wave
-- [ ] 35. Mercury Wave
-- [ ] 36. Northern Wave
-- [ ] 37. Coral Wave
-- [ ] 38. Static Interference Wave
-- [ ] 39. Double Helix Wave
-- [ ] 40. Mountain Range Wave
-- [ ] 41. River Current Wave
-- [ ] 42. Sine Grid Wave
-- [ ] 43. Reactive Beat Wave
-- [ ] 44. Desert Mirage Wave
+- [x] 7. Equalizer Bars
+- [x] 8. Skyline Silhouette
+- [x] 9. Neon Wave Grid
+- [x] 10. Interactive Wave
+- [x] 11. Ribbon Wave
+- [x] 12. Particle Wave
+- [x] 13. Tidal Wave
+- [x] 14. Calm Sea Wave
+- [x] 15. Storm Wave
+- [x] 16. Desert Dune Wave
+- [x] 17. Silk Wave
+- [x] 18. Sound Wave Pulse
+- [x] 19. Retro Grid Horizon
+- [x] 20. Aurora Wave
+- [x] 21. Molten Wave
+- [x] 22. Glacier Wave
+- [x] 23. Sunset Horizon Wave
+- [x] 24. Underwater Wave
+- [x] 25. Wind Ripple
+- [x] 26. Heartbeat Wave
+- [x] 27. Radio Frequency Wave
+- [x] 28. Cosmic Wave
+- [x] 29. Paper Fold Wave
+- [x] 30. Fabric Drape Wave
+- [x] 31. Lava Flow Wave
+- [x] 32. Ink Wave
+- [x] 33. Crystal Wave
+- [x] 34. Bamboo Wave
+- [x] 35. Mercury Wave
+- [x] 36. Northern Wave
+- [x] 37. Coral Wave
+- [x] 38. Static Interference Wave
+- [x] 39. Double Helix Wave
+- [x] 40. Mountain Range Wave
+- [x] 41. River Current Wave
+- [x] 42. Sine Grid Wave
+- [x] 43. Reactive Beat Wave
+- [x] 44. Desert Mirage Wave
 - [ ] 45. Frozen Wave
 - [ ] 46. Molten Glass Wave
 - [ ] 47. Tropical Wave

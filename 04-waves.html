@@ -109,6 +109,10 @@
         <canvas id="flowCanvas"></canvas>
       </div>
 
+      <div class="wave-scene" id="wave-dynamic">
+        <div id="dynamicWaveTrack" style="position:absolute; inset:0;"></div>
+      </div>
+
     </div>
   </div>
   <div id="cursorSpotlight"></div>
@@ -141,6 +145,44 @@
       <button class="style-btn" data-style="gradient">Gradient Wave</button>
       <button class="style-btn" data-style="svg">SVG Wave</button>
       <button class="style-btn" data-style="flowing">Animated Flowing Wave</button>
+      <button class="style-btn" data-style="equalizerBars">Equalizer Bars</button>
+      <button class="style-btn" data-style="skylineSilhouette">Skyline Silhouette</button>
+      <button class="style-btn" data-style="neonWaveGrid">Neon Wave Grid</button>
+      <button class="style-btn" data-style="interactiveWave">Interactive Wave</button>
+      <button class="style-btn" data-style="ribbonWave">Ribbon Wave</button>
+      <button class="style-btn" data-style="particleWave">Particle Wave</button>
+      <button class="style-btn" data-style="tidalWave">Tidal Wave</button>
+      <button class="style-btn" data-style="calmSeaWave">Calm Sea Wave</button>
+      <button class="style-btn" data-style="stormWave">Storm Wave</button>
+      <button class="style-btn" data-style="desertDuneWave">Desert Dune Wave</button>
+      <button class="style-btn" data-style="silkWave">Silk Wave</button>
+      <button class="style-btn" data-style="soundWavePulse">Sound Wave Pulse</button>
+      <button class="style-btn" data-style="retroGridHorizon">Retro Grid Horizon</button>
+      <button class="style-btn" data-style="auroraWave">Aurora Wave</button>
+      <button class="style-btn" data-style="moltenWave">Molten Wave</button>
+      <button class="style-btn" data-style="glacierWave">Glacier Wave</button>
+      <button class="style-btn" data-style="sunsetHorizonWave">Sunset Horizon Wave</button>
+      <button class="style-btn" data-style="underwaterWave">Underwater Wave</button>
+      <button class="style-btn" data-style="windRipple">Wind Ripple</button>
+      <button class="style-btn" data-style="heartbeatWave">Heartbeat Wave</button>
+      <button class="style-btn" data-style="radioFrequencyWave">Radio Frequency Wave</button>
+      <button class="style-btn" data-style="cosmicWave">Cosmic Wave</button>
+      <button class="style-btn" data-style="paperFoldWave">Paper Fold Wave</button>
+      <button class="style-btn" data-style="fabricDrapeWave">Fabric Drape Wave</button>
+      <button class="style-btn" data-style="lavaFlowWave">Lava Flow Wave</button>
+      <button class="style-btn" data-style="inkWave">Ink Wave</button>
+      <button class="style-btn" data-style="crystalWave">Crystal Wave</button>
+      <button class="style-btn" data-style="bambooWave">Bamboo Wave</button>
+      <button class="style-btn" data-style="mercuryWave">Mercury Wave</button>
+      <button class="style-btn" data-style="northernWave">Northern Wave</button>
+      <button class="style-btn" data-style="coralWave">Coral Wave</button>
+      <button class="style-btn" data-style="staticInterferenceWave">Static Interference Wave</button>
+      <button class="style-btn" data-style="doubleHelixWave">Double Helix Wave</button>
+      <button class="style-btn" data-style="mountainRangeWave">Mountain Range Wave</button>
+      <button class="style-btn" data-style="riverCurrentWave">River Current Wave</button>
+      <button class="style-btn" data-style="sineGridWave">Sine Grid Wave</button>
+      <button class="style-btn" data-style="reactiveBeatWave">Reactive Beat Wave</button>
+      <button class="style-btn" data-style="desertMirageWave">Desert Mirage Wave</button>
     </div>
   </main>
 
@@ -200,9 +242,109 @@
     });
 
     function setStyle (name) {
-      scenes.forEach((s) => s.classList.toggle('active', s.id === `wave-${name}`));
+      const isDynamic = !!dynamicWaveConfigs[name];
+      scenes.forEach((s) => s.classList.toggle('active', isDynamic ? s.id === 'wave-dynamic' : s.id === `wave-${name}`));
+      if (isDynamic) renderDynamicWave(name);
       if (name === 'flowing') startFlow();
       else stopFlow();
+    }
+
+    // Reusable SVG wave generator for the 38 extra wave variations (color/speed/shape driven, no hand-written paths)
+    const SVG_NS = 'http://www.w3.org/2000/svg';
+
+    function wavePathAt (offset, baseline, amp, jagged) {
+      if (jagged) {
+        const points = 12;
+        let d = `M${offset},${baseline}`;
+        for (let i = 1; i <= points; i++) {
+          const x = offset + (1200 / points) * i;
+          const y = baseline + (i % 2 === 0 ? amp : -amp);
+          d += ` L${x},${y}`;
+        }
+        d += ` L${offset + 1200},200 L${offset},200 Z`;
+        return d;
+      }
+      const p1 = baseline - amp;
+      const p2 = baseline + amp;
+      return `M${offset},${baseline} C${offset + 150},${p2} ${offset + 350},${p1} ${offset + 600},${baseline} C${offset + 850},${p2} ${offset + 1050},${p1} ${offset + 1200},${baseline} L${offset + 1200},200 L${offset},200 Z`;
+    }
+
+    const dynamicWaveConfigs = {
+      equalizerBars: { layers: [ { baseline: 150, amp: 40, jagged: true, color: '#22d3ee', duration: 4, height: 60, opacity: 0.9 } ] },
+      skylineSilhouette: { layers: [ { baseline: 130, amp: 50, jagged: true, color: '#1e293b', duration: 40, height: 70, opacity: 0.9 } ] },
+      neonWaveGrid: { layers: [ { baseline: 120, amp: 30, jagged: false, color: '#22d3ee', duration: 10, height: 40, opacity: 0.8 }, { baseline: 140, amp: 25, jagged: false, color: '#f472b6', duration: 14, height: 30, opacity: 0.6 } ] },
+      interactiveWave: { layers: [ { baseline: 120, amp: 35, jagged: false, color: '#38bdf8', duration: 12, height: 45, opacity: 0.8 } ], interactive: true },
+      ribbonWave: { layers: [ { baseline: 130, amp: 60, jagged: false, color: '#a78bfa', duration: 18, height: 20, opacity: 0.7 } ] },
+      particleWave: { layers: [ { baseline: 140, amp: 12, jagged: true, color: '#f8fafc', duration: 8, height: 25, opacity: 0.6 } ] },
+      tidalWave: { layers: [ { baseline: 110, amp: 70, jagged: false, color: '#0ea5e9', duration: 8, height: 55, opacity: 0.9 } ] },
+      calmSeaWave: { layers: [ { baseline: 140, amp: 15, jagged: false, color: '#38bdf8', duration: 30, height: 35, opacity: 0.6 } ] },
+      stormWave: { layers: [ { baseline: 110, amp: 65, jagged: true, color: '#334155', duration: 6, height: 60, opacity: 0.9 }, { baseline: 130, amp: 50, jagged: true, color: '#1e293b', duration: 8, height: 45, opacity: 0.7 } ] },
+      desertDuneWave: { layers: [ { baseline: 130, amp: 40, jagged: false, color: '#d97706', duration: 34, height: 55, opacity: 0.8 } ] },
+      silkWave: { layers: [ { baseline: 130, amp: 35, jagged: false, color: '#f9a8d4', duration: 20, height: 40, opacity: 0.55 } ] },
+      soundWavePulse: { layers: [ { baseline: 140, amp: 45, jagged: true, color: '#a855f7', duration: 5, height: 50, opacity: 0.85 } ] },
+      retroGridHorizon: { layers: [ { baseline: 150, amp: 20, jagged: false, color: '#ec4899', duration: 16, height: 35, opacity: 0.7 } ] },
+      auroraWave: { layers: [ { baseline: 120, amp: 40, jagged: false, color: '#34d399', duration: 22, height: 50, opacity: 0.6 }, { baseline: 140, amp: 30, jagged: false, color: '#22d3ee', duration: 26, height: 35, opacity: 0.5 } ] },
+      moltenWave: { layers: [ { baseline: 120, amp: 45, jagged: false, color: '#f97316', duration: 9, height: 55, opacity: 0.85 } ] },
+      glacierWave: { layers: [ { baseline: 130, amp: 25, jagged: false, color: '#93c5fd', duration: 28, height: 45, opacity: 0.7 } ] },
+      sunsetHorizonWave: { layers: [ { baseline: 130, amp: 35, jagged: false, color: '#fb923c', duration: 20, height: 45, opacity: 0.75 } ] },
+      underwaterWave: { layers: [ { baseline: 120, amp: 30, jagged: false, color: '#0e7490', duration: 24, height: 60, opacity: 0.65 } ] },
+      windRipple: { layers: [ { baseline: 145, amp: 10, jagged: false, color: '#94a3b8', duration: 6, height: 25, opacity: 0.5 } ] },
+      heartbeatWave: { layers: [ { baseline: 130, amp: 55, jagged: true, color: '#ef4444', duration: 3, height: 40, opacity: 0.85 } ] },
+      radioFrequencyWave: { layers: [ { baseline: 130, amp: 40, jagged: true, color: '#38bdf8', duration: 7, height: 40, opacity: 0.7 } ] },
+      cosmicWave: { layers: [ { baseline: 120, amp: 35, jagged: false, color: '#6366f1', duration: 20, height: 50, opacity: 0.6 }, { baseline: 140, amp: 25, jagged: false, color: '#a855f7', duration: 24, height: 35, opacity: 0.5 } ] },
+      paperFoldWave: { layers: [ { baseline: 130, amp: 45, jagged: true, color: '#e2e8f0', duration: 16, height: 45, opacity: 0.5 } ] },
+      fabricDrapeWave: { layers: [ { baseline: 130, amp: 30, jagged: false, color: '#c4b5fd', duration: 22, height: 45, opacity: 0.55 } ] },
+      lavaFlowWave: { layers: [ { baseline: 120, amp: 40, jagged: false, color: '#dc2626', duration: 12, height: 55, opacity: 0.85 } ] },
+      inkWave: { layers: [ { baseline: 130, amp: 35, jagged: false, color: '#1e293b', duration: 18, height: 50, opacity: 0.8 } ] },
+      crystalWave: { layers: [ { baseline: 130, amp: 35, jagged: true, color: '#a5f3fc', duration: 14, height: 40, opacity: 0.6 } ] },
+      bambooWave: { layers: [ { baseline: 135, amp: 20, jagged: true, color: '#84cc16', duration: 18, height: 35, opacity: 0.6 } ] },
+      mercuryWave: { layers: [ { baseline: 130, amp: 25, jagged: false, color: '#cbd5e1', duration: 10, height: 40, opacity: 0.7 } ] },
+      northernWave: { layers: [ { baseline: 120, amp: 35, jagged: false, color: '#22d3ee', duration: 20, height: 50, opacity: 0.6 }, { baseline: 140, amp: 25, jagged: false, color: '#34d399', duration: 24, height: 35, opacity: 0.5 } ] },
+      coralWave: { layers: [ { baseline: 130, amp: 30, jagged: false, color: '#fb7185', duration: 16, height: 45, opacity: 0.7 } ] },
+      staticInterferenceWave: { layers: [ { baseline: 130, amp: 50, jagged: true, color: '#94a3b8', duration: 2, height: 50, opacity: 0.6 } ] },
+      doubleHelixWave: { layers: [ { baseline: 110, amp: 35, jagged: false, color: '#818cf8', duration: 14, height: 40, opacity: 0.7 }, { baseline: 150, amp: 35, jagged: false, color: '#f472b6', duration: 14, height: 40, opacity: 0.7 } ] },
+      mountainRangeWave: { layers: [ { baseline: 110, amp: 60, jagged: true, color: '#475569', duration: 30, height: 70, opacity: 0.9 } ] },
+      riverCurrentWave: { layers: [ { baseline: 135, amp: 20, jagged: false, color: '#0ea5e9', duration: 9, height: 35, opacity: 0.7 } ] },
+      sineGridWave: { layers: [ { baseline: 130, amp: 30, jagged: false, color: '#38bdf8', duration: 12, height: 40, opacity: 0.6 }, { baseline: 130, amp: 30, jagged: false, color: '#38bdf8', duration: 20, height: 40, opacity: 0.3 } ] },
+      reactiveBeatWave: { layers: [ { baseline: 130, amp: 50, jagged: true, color: '#facc15', duration: 1.5, height: 45, opacity: 0.85 } ] },
+      desertMirageWave: { layers: [ { baseline: 140, amp: 15, jagged: false, color: '#fde68a', duration: 26, height: 30, opacity: 0.5 } ] }
+    };
+
+    function renderDynamicWave (name) {
+      const cfg = dynamicWaveConfigs[name];
+      const track = document.getElementById('dynamicWaveTrack');
+      track.innerHTML = '';
+      cfg.layers.forEach((layer) => {
+        const wrap = document.createElement('div');
+        wrap.className = 'wave-track';
+        wrap.style.position = 'absolute';
+        wrap.style.bottom = '0';
+        wrap.style.left = '0';
+        wrap.style.width = '200%';
+        wrap.style.height = `${layer.height}%`;
+        wrap.style.opacity = reducedMotion ? '1' : layer.opacity;
+        wrap.style.animationName = 'wave-scroll';
+        wrap.style.animationTimingFunction = 'linear';
+        wrap.style.animationIterationCount = 'infinite';
+        wrap.style.animationDuration = `${layer.duration}s`;
+
+        const svg = document.createElementNS(SVG_NS, 'svg');
+        svg.setAttribute('viewBox', '0 0 2400 200');
+        svg.setAttribute('preserveAspectRatio', 'none');
+        svg.style.width = '100%';
+        svg.style.height = '100%';
+        svg.style.display = 'block';
+
+        [ 0, 1200 ].forEach((offset) => {
+          const path = document.createElementNS(SVG_NS, 'path');
+          path.setAttribute('d', wavePathAt(offset, layer.baseline, layer.amp, layer.jagged));
+          path.setAttribute('fill', layer.color);
+          svg.appendChild(path);
+        });
+
+        wrap.appendChild(svg);
+        track.appendChild(wrap);
+      });
     }
 
     document.getElementById('styleSelector').addEventListener('click', (e) => {
@@ -211,6 +353,17 @@
       document.querySelectorAll('.style-btn').forEach((b) => b.classList.remove('active'));
       btn.classList.add('active');
       setStyle(btn.dataset.style);
+    });
+
+    // Interactive Wave: amplitude reacts to mouse Y position
+    window.addEventListener('mousemove', (e) => {
+      if (!document.getElementById('wave-dynamic').classList.contains('active')) return;
+      const active = document.querySelector('.style-btn.active');
+      if (!active || active.dataset.style !== 'interactiveWave') return;
+      const ratio = 1 - e.clientY / window.innerHeight;
+      const track = document.getElementById('dynamicWaveTrack');
+      const svgEl = track.querySelector('svg');
+      if (svgEl) svgEl.style.transform = `scaleY(${(0.6 + ratio * 0.8).toFixed(2)})`;
     });
 
     // Canvas flowing wave
