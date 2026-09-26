@@ -617,3 +617,92 @@ main {
   opacity: 0.65;
   animation: blob-morph 16s ease-in-out infinite;
 }
+
+.gradient-softBlur {
+  background: radial-gradient(circle at 50% 50%, #e0e7ff 0%, #c7d2fe 30%, #312e81 65%, #0a0a12 90%);
+  background-size: 160% 160%;
+  animation: radial-pulse 20s ease-in-out infinite;
+  filter: blur(2px);
+}
+
+.gradient-iridescent {
+  background: conic-gradient(from 0deg at 50% 50%, #a5f3fc, #fbcfe8, #ddd6fe, #bbf7d0, #fef9c3, #a5f3fc);
+  animation: multicolor-rotate 26s linear infinite;
+  opacity: 0.4;
+}
+
+.gradient-boldDuotone {
+  background: linear-gradient(125deg, #db2777, #0891b2);
+  background-size: 400% 400%;
+  animation: linear-shift 10s ease infinite;
+}
+
+.gradient-pastelMesh {
+  background-image:
+    radial-gradient(at 20% 20%, #fbcfe8 0px, transparent 50%),
+    radial-gradient(at 80% 15%, #bae6fd 0px, transparent 50%),
+    radial-gradient(at 15% 80%, #ddd6fe 0px, transparent 50%),
+    radial-gradient(at 85% 85%, #bbf7d0 0px, transparent 50%),
+    radial-gradient(at 50% 50%, #fef9c3 0px, transparent 55%);
+  background-color: #1e1b2e;
+  background-size: 180% 180%;
+  animation: mesh-shift 30s ease-in-out infinite;
+}
+
+.gradient-glass {
+  background: linear-gradient(120deg, #1e293b, #475569, #1e293b);
+  background-size: 400% 400%;
+  animation: linear-shift 22s ease infinite;
+  opacity: 0.9;
+}
+
+.gradient-sandDune {
+  background: linear-gradient(115deg, #fde68a, #d97706, #fef3c7, #d97706);
+  background-size: 400% 400%;
+  animation: linear-shift 30s ease infinite;
+}
+
+.gradient-volcanic {
+  background: radial-gradient(circle at 50% 50%, #f97316 0%, #7c2d12 30%, #1c0701 65%, #0a0a12 90%);
+  background-size: 160% 160%;
+  animation: radial-pulse 9s ease-in-out infinite;
+}
+
+.gradient-arctic {
+  background: radial-gradient(circle at 50% 50%, #f0f9ff 0%, #7dd3fc 30%, #0369a1 65%, #0a0a12 90%);
+  background-size: 160% 160%;
+  animation: radial-pulse 18s ease-in-out infinite;
+}
+
+.gradient-candySwirl {
+  background: conic-gradient(from 0deg at 50% 50%, #f472b6, #facc15, #38bdf8, #a855f7, #34d399, #f472b6);
+  animation: multicolor-rotate 10s linear infinite;
+  opacity: 0.8;
+}
+
+.gradient-prism {
+  background: conic-gradient(from 0deg at 50% 50%, #ef4444, #f97316, #facc15, #22c55e, #06b6d4, #6366f1, #a855f7, #ef4444);
+  animation: multicolor-rotate 14s linear infinite;
+  opacity: 0.35;
+}
+
+.gradient-vintageFilm {
+  background: linear-gradient(115deg, #78350f, #d97706, #451a03);
+  background-size: 400% 400%;
+  animation: linear-shift 32s ease infinite;
+}
+
+.gradient-vintageFilm::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  filter: url(#grain-filter);
+  mix-blend-mode: overlay;
+  opacity: 0.35;
+}
+
+.gradient-ultraviolet {
+  background: radial-gradient(circle at 50% 50%, #a855f7 0%, #6d28d9 30%, #2e1065 65%, #0a0a12 90%);
+  background-size: 160% 160%;
+  animation: radial-pulse 11s ease-in-out infinite;
+}

@@ -155,18 +155,18 @@ Mark items `[x]` as they get implemented. Items already live in the code are pre
 - [x] 36. Pearl Gradient
 - [x] 37. Neon Split Gradient
 - [x] 38. Diagonal Ribbon Gradient
-- [ ] 39. Soft Blur Gradient
-- [ ] 40. Iridescent Gradient
-- [ ] 41. Bold Duotone
-- [ ] 42. Pastel Mesh
-- [ ] 43. Glass Gradient
-- [ ] 44. Sand Dune Gradient
-- [ ] 45. Volcanic Gradient
-- [ ] 46. Arctic Gradient
-- [ ] 47. Candy Swirl Gradient
-- [ ] 48. Prism Gradient
-- [ ] 49. Vintage Film Gradient
-- [ ] 50. Ultraviolet Gradient
+- [x] 39. Soft Blur Gradient
+- [x] 40. Iridescent Gradient
+- [x] 41. Bold Duotone
+- [x] 42. Pastel Mesh
+- [x] 43. Glass Gradient
+- [x] 44. Sand Dune Gradient
+- [x] 45. Volcanic Gradient
+- [x] 46. Arctic Gradient
+- [x] 47. Candy Swirl Gradient
+- [x] 48. Prism Gradient
+- [x] 49. Vintage Film Gradient
+- [x] 50. Ultraviolet Gradient
 
 ---
 
