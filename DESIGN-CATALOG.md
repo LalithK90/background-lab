@@ -68,32 +68,32 @@ Mark items `[x]` as they get implemented. Items already live in the code are pre
 - [x] 4. Emerald Aurora
 - [x] 5. Northern Lights
 - [x] 6. Neon Aurora
-- [ ] 7. Solar Flare
-- [ ] 8. Deep Space Nebula
-- [ ] 9. Polar Vortex
-- [ ] 10. Cosmic Dust
-- [ ] 11. Monochrome Cyan
-- [ ] 12. Aurora + Stars
-- [ ] 13. Crimson Sky
-- [ ] 14. Golden Hour
-- [ ] 15. Arctic Glow
-- [ ] 16. Midnight Violet
-- [ ] 17. Electric Teal
-- [ ] 18. Rose Quartz
-- [ ] 19. Amber Waves
-- [ ] 20. Glacier Blue
-- [ ] 21. Volcanic Glow
-- [ ] 22. Twilight Drift
-- [ ] 23. Opal Shimmer
-- [ ] 24. Cherry Blossom Sky
-- [ ] 25. Storm Cloud
-- [ ] 26. Desert Mirage
-- [ ] 27. Coral Reef Glow
-- [ ] 28. Moonlit Mist
-- [ ] 29. Copper Haze
-- [ ] 30. Jade Curtain
-- [ ] 31. Frost Aurora
-- [ ] 32. Solar Eclipse
+- [x] 7. Solar Flare
+- [x] 8. Deep Space Nebula
+- [x] 9. Polar Vortex
+- [x] 10. Cosmic Dust
+- [x] 11. Monochrome Cyan
+- [x] 12. Aurora + Stars
+- [x] 13. Crimson Sky
+- [x] 14. Golden Hour
+- [x] 15. Arctic Glow
+- [x] 16. Midnight Violet
+- [x] 17. Electric Teal
+- [x] 18. Rose Quartz
+- [x] 19. Amber Waves
+- [x] 20. Glacier Blue
+- [x] 21. Volcanic Glow
+- [x] 22. Twilight Drift
+- [x] 23. Opal Shimmer
+- [x] 24. Cherry Blossom Sky
+- [x] 25. Storm Cloud
+- [x] 26. Desert Mirage
+- [x] 27. Coral Reef Glow
+- [x] 28. Moonlit Mist
+- [x] 29. Copper Haze
+- [x] 30. Jade Curtain
+- [x] 31. Frost Aurora
+- [x] 32. Solar Eclipse
 - [ ] 33. Bioluminescent Sea
 - [ ] 34. Dragon Fire
 - [ ] 35. Icy Mint
