@@ -123,38 +123,38 @@ Mark items `[x]` as they get implemented. Items already live in the code are pre
 - [x] 4. Radial Gradient
 - [x] 5. Liquid Gradient
 - [x] 6. Multi-color Gradient
-- [ ] 7. Duotone Gradient
-- [ ] 8. Grainy Gradient
-- [ ] 9. Aurora-Gradient Hybrid
-- [ ] 10. Neon Glow Gradient
-- [ ] 11. Pastel Gradient
-- [ ] 12. Corporate Gradient
-- [ ] 13. Sunrise Gradient
-- [ ] 14. Sunset Gradient
-- [ ] 15. Ocean Depth Gradient
-- [ ] 16. Cotton Candy Gradient
-- [ ] 17. Midnight Gradient
-- [ ] 18. Fire Gradient
-- [ ] 19. Ice Gradient
-- [ ] 20. Retro Wave Gradient
-- [ ] 21. Monochrome Gradient
-- [ ] 22. Chrome Gradient
-- [ ] 23. Holographic Gradient
-- [ ] 24. Velvet Gradient
-- [ ] 25. Metallic Sheen
-- [ ] 26. Desert Dune Gradient
-- [ ] 27. Forest Gradient
-- [ ] 28. Berry Gradient
-- [ ] 29. Citrus Gradient
-- [ ] 30. Twilight Gradient
-- [ ] 31. Steel Blue Gradient
-- [ ] 32. Rose Gold Gradient
-- [ ] 33. Emerald Gradient
-- [ ] 34. Copper Gradient
-- [ ] 35. Galaxy Gradient
-- [ ] 36. Pearl Gradient
-- [ ] 37. Neon Split Gradient
-- [ ] 38. Diagonal Ribbon Gradient
+- [x] 7. Duotone Gradient
+- [x] 8. Grainy Gradient
+- [x] 9. Aurora-Gradient Hybrid
+- [x] 10. Neon Glow Gradient
+- [x] 11. Pastel Gradient
+- [x] 12. Corporate Gradient
+- [x] 13. Sunrise Gradient
+- [x] 14. Sunset Gradient
+- [x] 15. Ocean Depth Gradient
+- [x] 16. Cotton Candy Gradient
+- [x] 17. Midnight Gradient
+- [x] 18. Fire Gradient
+- [x] 19. Ice Gradient
+- [x] 20. Retro Wave Gradient
+- [x] 21. Monochrome Gradient
+- [x] 22. Chrome Gradient
+- [x] 23. Holographic Gradient
+- [x] 24. Velvet Gradient
+- [x] 25. Metallic Sheen
+- [x] 26. Desert Dune Gradient
+- [x] 27. Forest Gradient
+- [x] 28. Berry Gradient
+- [x] 29. Citrus Gradient
+- [x] 30. Twilight Gradient
+- [x] 31. Steel Blue Gradient
+- [x] 32. Rose Gold Gradient
+- [x] 33. Emerald Gradient
+- [x] 34. Copper Gradient
+- [x] 35. Galaxy Gradient
+- [x] 36. Pearl Gradient
+- [x] 37. Neon Split Gradient
+- [x] 38. Diagonal Ribbon Gradient
 - [ ] 39. Soft Blur Gradient
 - [ ] 40. Iridescent Gradient
 - [ ] 41. Bold Duotone

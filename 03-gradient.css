@@ -384,3 +384,236 @@ main {
     transform: rotate(360deg) scale(1.4);
   }
 }
+
+/* Batch 2: 32 additional gradient variations, reusing the mesh/blob/linear/radial/multicolor keyframes above */
+
+.gradient-duotone {
+  background: linear-gradient(120deg, #7c3aed, #0ea5e9);
+  background-size: 400% 400%;
+  animation: linear-shift 14s ease infinite;
+}
+
+.gradient-grainy {
+  background: linear-gradient(120deg, #1e1b4b, #7c3aed, #db2777, #1e1b4b);
+  background-size: 400% 400%;
+  animation: linear-shift 18s ease infinite;
+}
+
+.gradient-grainy::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  filter: url(#grain-filter);
+  mix-blend-mode: overlay;
+  opacity: 0.5;
+}
+
+.gradient-auroraHybrid {
+  background-image:
+    radial-gradient(at 20% 20%, #22c55e 0px, transparent 50%),
+    radial-gradient(at 80% 15%, #06b6d4 0px, transparent 50%),
+    radial-gradient(at 15% 80%, #8b5cf6 0px, transparent 50%),
+    radial-gradient(at 85% 85%, #3b82f6 0px, transparent 50%),
+    radial-gradient(at 50% 50%, #34d399 0px, transparent 55%);
+  background-color: #04140f;
+  background-size: 180% 180%;
+  animation: mesh-shift 26s ease-in-out infinite;
+}
+
+.gradient-neonGlow {
+  background: radial-gradient(circle at 50% 50%, #f0abfc 0%, #a855f7 25%, #1e1b4b 55%, #0a0a12 80%);
+  background-size: 160% 160%;
+  animation: radial-pulse 6s ease-in-out infinite;
+}
+
+.gradient-pastel {
+  background: linear-gradient(115deg, #fbcfe8, #bae6fd, #ddd6fe, #fbcfe8);
+  background-size: 400% 400%;
+  animation: linear-shift 26s ease infinite;
+}
+
+.gradient-corporate {
+  background: linear-gradient(100deg, #1e293b, #334155);
+  background-size: 300% 300%;
+  animation: linear-shift 36s ease infinite;
+}
+
+.gradient-sunrise {
+  background: linear-gradient(115deg, #fde68a, #fb923c, #f472b6, #fde68a);
+  background-size: 400% 400%;
+  animation: linear-shift 20s ease infinite;
+}
+
+.gradient-sunsetGrad {
+  background: linear-gradient(115deg, #7c3aed, #ec4899, #fb923c, #7c3aed);
+  background-size: 400% 400%;
+  animation: linear-shift 20s ease infinite;
+}
+
+.gradient-oceanDepth {
+  background: radial-gradient(circle at 50% 50%, #0ea5e9 0%, #0369a1 25%, #082f49 55%, #0a0a12 80%);
+  background-size: 160% 160%;
+  animation: radial-pulse 12s ease-in-out infinite;
+}
+
+.gradient-cottonCandy {
+  background: linear-gradient(115deg, #fbcfe8, #a5f3fc, #f9a8d4, #bae6fd);
+  background-size: 400% 400%;
+  animation: linear-shift 22s ease infinite;
+}
+
+.gradient-midnight {
+  background: linear-gradient(120deg, #020617, #1e1b4b, #0a0a12);
+  background-size: 300% 300%;
+  animation: linear-shift 34s ease infinite;
+}
+
+.gradient-fire {
+  background: radial-gradient(circle at 50% 50%, #fde047 0%, #f97316 30%, #b91c1c 60%, #0a0a12 85%);
+  background-size: 160% 160%;
+  animation: radial-pulse 5s ease-in-out infinite;
+}
+
+.gradient-ice {
+  background: radial-gradient(circle at 50% 50%, #f0f9ff 0%, #bae6fd 30%, #0ea5e9 60%, #0a0a12 85%);
+  background-size: 160% 160%;
+  animation: radial-pulse 16s ease-in-out infinite;
+}
+
+.gradient-retroWave {
+  background: linear-gradient(115deg, #7c3aed, #ec4899, #22d3ee, #7c3aed);
+  background-size: 400% 400%;
+  animation: linear-shift 15s ease infinite;
+}
+
+.gradient-monochrome {
+  background: linear-gradient(115deg, #0a0a12, #38bdf8, #0a0a12);
+  background-size: 400% 400%;
+  animation: linear-shift 24s ease infinite;
+}
+
+.gradient-chrome {
+  background: linear-gradient(115deg, #94a3b8, #f8fafc, #64748b, #cbd5e1);
+  background-size: 400% 400%;
+  animation: linear-shift 18s ease infinite;
+}
+
+.gradient-holographic {
+  background: conic-gradient(from 0deg at 50% 50%, #fbcfe8, #bae6fd, #ddd6fe, #bbf7d0, #fef08a, #fbcfe8);
+  animation: multicolor-rotate 22s linear infinite;
+  opacity: 0.55;
+}
+
+.gradient-velvet {
+  background: radial-gradient(circle at 50% 50%, #7c2d12 0%, #4c0519 30%, #1e1b4b 60%, #0a0a12 85%);
+  background-size: 160% 160%;
+  animation: radial-pulse 14s ease-in-out infinite;
+}
+
+.gradient-metallicSheen {
+  background: linear-gradient(115deg, #71717a, #fde68a, #a1a1aa, #71717a);
+  background-size: 400% 400%;
+  animation: linear-shift 7s ease infinite;
+}
+
+.gradient-desertDune {
+  background: linear-gradient(115deg, #d97706, #fde68a, #b45309, #d97706);
+  background-size: 400% 400%;
+  animation: linear-shift 28s ease infinite;
+}
+
+.gradient-forest {
+  background: linear-gradient(115deg, #064e3b, #16a34a, #052e16, #064e3b);
+  background-size: 400% 400%;
+  animation: linear-shift 24s ease infinite;
+}
+
+.gradient-berry {
+  background: linear-gradient(115deg, #831843, #d946ef, #6d28d9, #831843);
+  background-size: 400% 400%;
+  animation: linear-shift 19s ease infinite;
+}
+
+.gradient-citrus {
+  background: linear-gradient(115deg, #f97316, #facc15, #84cc16, #f97316);
+  background-size: 400% 400%;
+  animation: linear-shift 16s ease infinite;
+}
+
+.gradient-twilight {
+  background-image:
+    radial-gradient(at 20% 20%, #6366f1 0px, transparent 50%),
+    radial-gradient(at 80% 15%, #ec4899 0px, transparent 50%),
+    radial-gradient(at 15% 80%, #312e81 0px, transparent 50%),
+    radial-gradient(at 85% 85%, #a855f7 0px, transparent 50%),
+    radial-gradient(at 50% 50%, #1e1b4b 0px, transparent 55%);
+  background-color: #0a0a12;
+  background-size: 180% 180%;
+  animation: mesh-shift 24s ease-in-out infinite;
+}
+
+.gradient-steelBlue {
+  background: radial-gradient(circle at 50% 50%, #60a5fa 0%, #3b82f6 25%, #1e3a8a 55%, #0a0a12 80%);
+  background-size: 160% 160%;
+  animation: radial-pulse 13s ease-in-out infinite;
+}
+
+.gradient-roseGold {
+  background: linear-gradient(115deg, #fecdd3, #fbbf24, #fda4af, #fecdd3);
+  background-size: 400% 400%;
+  animation: linear-shift 21s ease infinite;
+}
+
+.gradient-emeraldGrad {
+  background: radial-gradient(circle at 50% 50%, #34d399 0%, #059669 25%, #064e3b 55%, #0a0a12 80%);
+  background-size: 160% 160%;
+  animation: radial-pulse 11s ease-in-out infinite;
+}
+
+.gradient-copper {
+  background: linear-gradient(115deg, #9a3412, #ea580c, #78350f, #9a3412);
+  background-size: 400% 400%;
+  animation: linear-shift 20s ease infinite;
+}
+
+.gradient-galaxy {
+  background-image:
+    radial-gradient(at 20% 20%, #7c3aed 0px, transparent 50%),
+    radial-gradient(at 80% 15%, #db2777 0px, transparent 50%),
+    radial-gradient(at 15% 80%, #1d4ed8 0px, transparent 50%),
+    radial-gradient(at 85% 85%, #4c1d95 0px, transparent 50%),
+    radial-gradient(at 50% 50%, #0a0a12 0px, transparent 55%);
+  background-color: #04040f;
+  background-size: 180% 180%;
+  animation: mesh-shift 30s ease-in-out infinite;
+}
+
+.gradient-pearl {
+  background: radial-gradient(circle at 50% 50%, #fdf4ff 0%, #fbcfe8 25%, #bae6fd 55%, #0a0a12 85%);
+  background-size: 160% 160%;
+  animation: radial-pulse 18s ease-in-out infinite;
+}
+
+.gradient-neonSplit {
+  background: linear-gradient(90deg, #22d3ee 0%, #22d3ee 49%, #d946ef 51%, #d946ef 100%);
+  background-size: 400% 400%;
+  animation: linear-shift 6s ease infinite;
+}
+
+.gradient-diagonalRibbon {
+  background: #0a0a12;
+}
+
+.gradient-diagonalRibbon::before {
+  content: '';
+  position: absolute;
+  top: 40%;
+  left: -20%;
+  width: 140%;
+  height: 18%;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #f472b6, #8b5cf6, #22d3ee);
+  filter: blur(50px);
+  opacity: 0.65;
+  animation: blob-morph 16s ease-in-out infinite;
+}

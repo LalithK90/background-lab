@@ -16,6 +16,10 @@
         result="noise" />
       <feDisplacementMap in="SourceGraphic" in2="noise" scale="60" xChannelSelector="R" yChannelSelector="G" />
     </filter>
+    <filter id="grain-filter">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" result="noise" />
+      <feColorMatrix in="noise" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.08 0" />
+    </filter>
   </svg>
 
   <div id="background">
@@ -51,13 +55,53 @@
       <button class="style-btn" data-style="radial">Radial Gradient</button>
       <button class="style-btn" data-style="liquid">Liquid Gradient</button>
       <button class="style-btn" data-style="multicolor">Multi-color Gradient</button>
+      <button class="style-btn" data-style="duotone">Duotone Gradient</button>
+      <button class="style-btn" data-style="grainy">Grainy Gradient</button>
+      <button class="style-btn" data-style="auroraHybrid">Aurora-Gradient Hybrid</button>
+      <button class="style-btn" data-style="neonGlow">Neon Glow Gradient</button>
+      <button class="style-btn" data-style="pastel">Pastel Gradient</button>
+      <button class="style-btn" data-style="corporate">Corporate Gradient</button>
+      <button class="style-btn" data-style="sunrise">Sunrise Gradient</button>
+      <button class="style-btn" data-style="sunsetGrad">Sunset Gradient</button>
+      <button class="style-btn" data-style="oceanDepth">Ocean Depth Gradient</button>
+      <button class="style-btn" data-style="cottonCandy">Cotton Candy Gradient</button>
+      <button class="style-btn" data-style="midnight">Midnight Gradient</button>
+      <button class="style-btn" data-style="fire">Fire Gradient</button>
+      <button class="style-btn" data-style="ice">Ice Gradient</button>
+      <button class="style-btn" data-style="retroWave">Retro Wave Gradient</button>
+      <button class="style-btn" data-style="monochrome">Monochrome Gradient</button>
+      <button class="style-btn" data-style="chrome">Chrome Gradient</button>
+      <button class="style-btn" data-style="holographic">Holographic Gradient</button>
+      <button class="style-btn" data-style="velvet">Velvet Gradient</button>
+      <button class="style-btn" data-style="metallicSheen">Metallic Sheen</button>
+      <button class="style-btn" data-style="desertDune">Desert Dune Gradient</button>
+      <button class="style-btn" data-style="forest">Forest Gradient</button>
+      <button class="style-btn" data-style="berry">Berry Gradient</button>
+      <button class="style-btn" data-style="citrus">Citrus Gradient</button>
+      <button class="style-btn" data-style="twilight">Twilight Gradient</button>
+      <button class="style-btn" data-style="steelBlue">Steel Blue Gradient</button>
+      <button class="style-btn" data-style="roseGold">Rose Gold Gradient</button>
+      <button class="style-btn" data-style="emeraldGrad">Emerald Gradient</button>
+      <button class="style-btn" data-style="copper">Copper Gradient</button>
+      <button class="style-btn" data-style="galaxy">Galaxy Gradient</button>
+      <button class="style-btn" data-style="pearl">Pearl Gradient</button>
+      <button class="style-btn" data-style="neonSplit">Neon Split Gradient</button>
+      <button class="style-btn" data-style="diagonalRibbon">Diagonal Ribbon Gradient</button>
     </div>
   </main>
 
   <script>
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const stage = document.getElementById('gradientStage');
-    const classes = [ 'gradient-mesh', 'gradient-blob', 'gradient-linear', 'gradient-radial', 'gradient-liquid', 'gradient-multicolor' ];
+    const classes = [
+      'gradient-mesh', 'gradient-blob', 'gradient-linear', 'gradient-radial', 'gradient-liquid', 'gradient-multicolor',
+      'gradient-duotone', 'gradient-grainy', 'gradient-auroraHybrid', 'gradient-neonGlow', 'gradient-pastel', 'gradient-corporate',
+      'gradient-sunrise', 'gradient-sunsetGrad', 'gradient-oceanDepth', 'gradient-cottonCandy', 'gradient-midnight', 'gradient-fire',
+      'gradient-ice', 'gradient-retroWave', 'gradient-monochrome', 'gradient-chrome', 'gradient-holographic', 'gradient-velvet',
+      'gradient-metallicSheen', 'gradient-desertDune', 'gradient-forest', 'gradient-berry', 'gradient-citrus', 'gradient-twilight',
+      'gradient-steelBlue', 'gradient-roseGold', 'gradient-emeraldGrad', 'gradient-copper', 'gradient-galaxy', 'gradient-pearl',
+      'gradient-neonSplit', 'gradient-diagonalRibbon'
+    ];
 
     // Cursor spotlight glow + click ripple burst + glass card tilt
     const spotlightEl = document.getElementById('cursorSpotlight');
