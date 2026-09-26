@@ -53,6 +53,16 @@
       <button class="style-btn" data-style="rainDrops">Rain Drops</button>
       <button class="style-btn" data-style="embersRising">Embers Rising</button>
       <button class="style-btn" data-style="pollenDrift">Pollen Drift</button>
+      <button class="style-btn" data-style="starCluster">Star Cluster</button>
+      <button class="style-btn" data-style="plasmaSpark">Plasma Spark</button>
+      <button class="style-btn" data-style="electricWeb">Electric Web</button>
+      <button class="style-btn" data-style="oceanBubbles">Ocean Bubbles</button>
+      <button class="style-btn" data-style="autumnLeaves">Autumn Leaves</button>
+      <button class="style-btn" data-style="bioluminescence">Bioluminescence</button>
+      <button class="style-btn" data-style="pixelDust">Pixel Dust</button>
+      <button class="style-btn" data-style="cometTrail">Comet Trail</button>
+      <button class="style-btn" data-style="spiderwebLink">Spiderweb Link</button>
+      <button class="style-btn" data-style="orbitRings">Orbit Rings</button>
     </div>
   </main>
 
@@ -357,6 +367,155 @@
           opacity: { value: { min: 0.3, max: 0.8 } },
           size: { value: { min: 1, max: 3 } },
           move: { enable: !reducedMotion, speed: 0.5, random: true, straight: false, outModes: { default: 'out' } },
+          links: { enable: false }
+        },
+        detectRetina: true
+      },
+      starCluster: {
+        background: { color: '#04050f' },
+        fpsLimit: 60,
+        particles: {
+          number: { value: 250, density: { enable: true, area: 900 } },
+          color: { value: [ '#ffffff', '#93c5fd' ] },
+          opacity: { value: { min: 0.3, max: 1 } },
+          size: { value: { min: 0.5, max: 2 } },
+          move: { enable: !reducedMotion, speed: 0.1, random: true },
+          links: { enable: false },
+          twinkle: { particles: { enable: true, frequency: 0.08, opacity: 1 } }
+        },
+        detectRetina: true
+      },
+      plasmaSpark: {
+        background: { color: '#0a0014' },
+        fpsLimit: 60,
+        particles: {
+          number: { value: 70, density: { enable: true, area: 900 } },
+          color: { value: [ '#e879f9', '#a855f7' ] },
+          links: { enable: true, distance: 100, color: '#e879f9', opacity: 0.5, width: 1 },
+          opacity: { value: { min: 0.4, max: 1 }, animation: { enable: !reducedMotion, speed: 3, minimumValue: 0.2, sync: false } },
+          size: { value: { min: 1, max: 2 } },
+          move: { enable: !reducedMotion, speed: 2.5, random: true }
+        },
+        detectRetina: true
+      },
+      electricWeb: {
+        background: { color: '#020a12' },
+        fpsLimit: 60,
+        particles: {
+          number: { value: 110, density: { enable: true, area: 900 } },
+          color: { value: '#22d3ee' },
+          links: { enable: true, distance: 140, color: '#22d3ee', opacity: 0.35, width: 1 },
+          move: { enable: !reducedMotion, speed: 1.4 },
+          size: { value: 1.5 }
+        },
+        interactivity: {
+          events: { onHover: { enable: true, mode: 'connect' } },
+          modes: { connect: { distance: 160, links: { opacity: 0.6 }, radius: 140 } }
+        },
+        detectRetina: true
+      },
+      oceanBubbles: {
+        background: { color: '#012a3a' },
+        fpsLimit: 60,
+        particles: {
+          number: { value: 40, density: { enable: true, area: 900 } },
+          color: { value: [ '#38bdf8', '#7dd3fc' ] },
+          shape: { type: 'circle' },
+          opacity: { value: 0.3 },
+          size: { value: { min: 10, max: 30 } },
+          move: { enable: !reducedMotion, direction: 'top', speed: { min: 0.5, max: 1.5 }, straight: false, random: true },
+          links: { enable: false },
+          stroke: { width: 1, color: '#bae6fd' }
+        },
+        detectRetina: true
+      },
+      autumnLeaves: {
+        background: { color: '#1a1006' },
+        fpsLimit: 60,
+        particles: {
+          number: { value: 60, density: { enable: true, area: 900 } },
+          color: { value: [ '#d97706', '#b45309', '#f59e0b' ] },
+          shape: { type: 'circle' },
+          opacity: { value: 0.8 },
+          size: { value: { min: 3, max: 6 } },
+          move: { enable: !reducedMotion, direction: 'bottom', speed: { min: 0.8, max: 2 }, straight: false, drift: 2 },
+          rotate: { value: { min: 0, max: 360 }, animation: { enable: !reducedMotion, speed: 10 } },
+          links: { enable: false }
+        },
+        detectRetina: true
+      },
+      bioluminescence: {
+        background: { color: '#001518' },
+        fpsLimit: 60,
+        particles: {
+          number: { value: 80, density: { enable: true, area: 900 } },
+          color: { value: [ '#2dd4bf', '#5eead4' ] },
+          opacity: { value: { min: 0.2, max: 0.9 }, animation: { enable: !reducedMotion, speed: 1.2, minimumValue: 0.1, sync: false } },
+          size: { value: { min: 1, max: 3 } },
+          move: { enable: !reducedMotion, speed: 0.3, random: true },
+          links: { enable: false }
+        },
+        detectRetina: true
+      },
+      pixelDust: {
+        background: { color: '#0a0a12' },
+        fpsLimit: 60,
+        particles: {
+          number: { value: 130, density: { enable: true, area: 900 } },
+          color: { value: [ '#f472b6', '#38bdf8', '#facc15' ] },
+          shape: { type: 'square' },
+          opacity: { value: 0.7 },
+          size: { value: { min: 1, max: 3 } },
+          move: { enable: !reducedMotion, speed: 1, random: true, straight: false },
+          links: { enable: false }
+        },
+        detectRetina: true
+      },
+      cometTrail: {
+        background: { color: '#03040a' },
+        fpsLimit: 60,
+        particles: {
+          number: { value: 20, density: { enable: true, area: 900 } },
+          color: { value: [ '#fbbf24', '#f8fafc' ] },
+          opacity: { value: 0.9 },
+          size: { value: { min: 2, max: 4 } },
+          move: {
+            enable: !reducedMotion,
+            speed: { min: 6, max: 12 },
+            direction: 'right',
+            straight: true,
+            outModes: { default: 'out' },
+            trail: { enable: true, length: 12, fillColor: '#03040a' }
+          },
+          links: { enable: false }
+        },
+        detectRetina: true
+      },
+      spiderwebLink: {
+        background: { color: '#0a0a12' },
+        fpsLimit: 60,
+        particles: {
+          number: { value: 60, density: { enable: true, area: 900 } },
+          color: { value: '#a3a3a3' },
+          links: { enable: true, distance: 200, color: '#a3a3a3', opacity: 0.4, width: 1, triangles: { enable: true, opacity: 0.05 } },
+          move: { enable: !reducedMotion, speed: 0.4 },
+          size: { value: 2 }
+        },
+        detectRetina: true
+      },
+      orbitRings: {
+        background: { color: '#0a0a12' },
+        fpsLimit: 60,
+        particles: {
+          number: { value: 90, density: { enable: true, area: 900 } },
+          color: { value: [ '#818cf8', '#38bdf8' ] },
+          opacity: { value: 0.7 },
+          size: { value: { min: 1, max: 3 } },
+          move: {
+            enable: !reducedMotion,
+            speed: 1.5,
+            attract: { enable: true, rotate: { x: 600, y: 1200 } }
+          },
           links: { enable: false }
         },
         detectRetina: true

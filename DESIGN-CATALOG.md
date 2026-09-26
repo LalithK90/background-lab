@@ -23,16 +23,16 @@ Mark items `[x]` as they get implemented. Items already live in the code are pre
 - [x] 14. Rain Drops
 - [x] 15. Embers Rising
 - [x] 16. Pollen Drift
-- [ ] 17. Star Cluster
-- [ ] 18. Plasma Spark
-- [ ] 19. Electric Web
-- [ ] 20. Ocean Bubbles
-- [ ] 21. Autumn Leaves
-- [ ] 22. Bioluminescence
-- [ ] 23. Pixel Dust
-- [ ] 24. Comet Trail
-- [ ] 25. Spiderweb Link
-- [ ] 26. Orbit Rings
+- [x] 17. Star Cluster
+- [x] 18. Plasma Spark
+- [x] 19. Electric Web
+- [x] 20. Ocean Bubbles
+- [x] 21. Autumn Leaves
+- [x] 22. Bioluminescence
+- [x] 23. Pixel Dust
+- [x] 24. Comet Trail
+- [x] 25. Spiderweb Link
+- [x] 26. Orbit Rings
 - [ ] 27. Sakura Petals
 - [ ] 28. Ash Storm
 - [ ] 29. Ion Field
