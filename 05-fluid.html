@@ -215,7 +215,7 @@
     });
 
     function setStyle (name) {
-      const isDynamic = !!fluidDynamicConfigs[name];
+      const isDynamic = !!fluidDynamicConfigs[ name ];
       scenes.forEach((s) => s.classList.toggle('active', isDynamic ? s.id === 'fluid-dynamic' : s.id === `fluid-${name}`));
       if (isDynamic) renderFluidDynamic(name);
       if (name === 'mouse') startMouseFollow(); else stopMouseFollow();
@@ -271,7 +271,7 @@
     };
 
     function renderFluidDynamic (name) {
-      const cfg = fluidDynamicConfigs[name];
+      const cfg = fluidDynamicConfigs[ name ];
       const scene = document.getElementById('fluid-dynamic');
       scene.style.background = cfg.bg;
       const wrap = document.getElementById('fluidDynamicWrap');
@@ -285,8 +285,8 @@
         blob.style.height = `${size}px`;
         blob.style.left = `${Math.random() * 80}%`;
         blob.style.top = `${Math.random() * 70}%`;
-        blob.style.background = cfg.colors[i % cfg.colors.length];
-        blob.style.animationName = cfg.motion === 'morph' ? 'blob-morph-slow' : motions[i % motions.length];
+        blob.style.background = cfg.colors[ i % cfg.colors.length ];
+        blob.style.animationName = cfg.motion === 'morph' ? 'blob-morph-slow' : motions[ i % motions.length ];
         blob.style.animationDuration = reducedMotion ? '0s' : `${cfg.duration + i}s`;
         blob.style.animationTimingFunction = 'ease-in-out';
         blob.style.animationIterationCount = 'infinite';
