@@ -33,30 +33,30 @@ Mark items `[x]` as they get implemented. Items already live in the code are pre
 - [x] 24. Comet Trail
 - [x] 25. Spiderweb Link
 - [x] 26. Orbit Rings
-- [ ] 27. Sakura Petals
-- [ ] 28. Ash Storm
-- [ ] 29. Ion Field
-- [ ] 30. Lightning Bugs
-- [ ] 31. Frost Crystals
-- [ ] 32. Solar Wind
-- [ ] 33. Deep Sea Glow
-- [ ] 34. Quantum Foam
-- [ ] 35. Meteor Shower
-- [ ] 36. Pixel Grid
-- [ ] 37. Cotton Clouds
-- [ ] 38. Sparkler
-- [ ] 39. Vortex Swirl
-- [ ] 40. Halo Rings
-- [ ] 41. Chain Reaction
-- [ ] 42. Static Noise
-- [ ] 43. Dew Drops
-- [ ] 44. Nebula Cloud
-- [ ] 45. Radiant Web
-- [ ] 46. Bubble Pop
-- [ ] 47. Ripple Field
-- [ ] 48. Glow Worms
-- [ ] 49. Synapse Fire
-- [ ] 50. Aurora Particles
+- [x] 27. Sakura Petals
+- [x] 28. Ash Storm
+- [x] 29. Ion Field
+- [x] 30. Lightning Bugs
+- [x] 31. Frost Crystals
+- [x] 32. Solar Wind
+- [x] 33. Deep Sea Glow
+- [x] 34. Quantum Foam
+- [x] 35. Meteor Shower
+- [x] 36. Pixel Grid
+- [x] 37. Cotton Clouds
+- [x] 38. Sparkler
+- [x] 39. Vortex Swirl
+- [x] 40. Halo Rings
+- [x] 41. Chain Reaction
+- [x] 42. Static Noise
+- [x] 43. Dew Drops
+- [x] 44. Nebula Cloud
+- [x] 45. Radiant Web
+- [x] 46. Bubble Pop
+- [x] 47. Ripple Field
+- [x] 48. Glow Worms
+- [x] 49. Synapse Fire
+- [x] 50. Aurora Particles
 
 ---
 
