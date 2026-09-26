@@ -94,24 +94,24 @@ Mark items `[x]` as they get implemented. Items already live in the code are pre
 - [x] 30. Jade Curtain
 - [x] 31. Frost Aurora
 - [x] 32. Solar Eclipse
-- [ ] 33. Bioluminescent Sea
-- [ ] 34. Dragon Fire
-- [ ] 35. Icy Mint
-- [ ] 36. Velvet Night
-- [ ] 37. Autumn Ember
-- [ ] 38. Cyber Aurora
-- [ ] 39. Phantom Glow
-- [ ] 40. Lavender Dream
-- [ ] 41. Toxic Green
-- [ ] 42. Ember Skyline
-- [ ] 43. Deep Ocean Trench
-- [ ] 44. Molten Core
-- [ ] 45. Silver Mist
-- [ ] 46. Radiant Orchid
-- [ ] 47. Winter Solstice
-- [ ] 48. Solar Corona
-- [ ] 49. Galactic Ribbon
-- [ ] 50. Aurora Prism
+- [x] 33. Bioluminescent Sea
+- [x] 34. Dragon Fire
+- [x] 35. Icy Mint
+- [x] 36. Velvet Night
+- [x] 37. Autumn Ember
+- [x] 38. Cyber Aurora
+- [x] 39. Phantom Glow
+- [x] 40. Lavender Dream
+- [x] 41. Toxic Green
+- [x] 42. Ember Skyline
+- [x] 43. Deep Ocean Trench
+- [x] 44. Molten Core
+- [x] 45. Silver Mist
+- [x] 46. Radiant Orchid
+- [x] 47. Winter Solstice
+- [x] 48. Solar Corona
+- [x] 49. Galactic Ribbon
+- [x] 50. Aurora Prism
 
 ---
 
