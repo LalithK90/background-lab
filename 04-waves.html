@@ -183,6 +183,12 @@
       <button class="style-btn" data-style="sineGridWave">Sine Grid Wave</button>
       <button class="style-btn" data-style="reactiveBeatWave">Reactive Beat Wave</button>
       <button class="style-btn" data-style="desertMirageWave">Desert Mirage Wave</button>
+      <button class="style-btn" data-style="frozenWave">Frozen Wave</button>
+      <button class="style-btn" data-style="moltenGlassWave">Molten Glass Wave</button>
+      <button class="style-btn" data-style="tropicalWave">Tropical Wave</button>
+      <button class="style-btn" data-style="deepOceanWave">Deep Ocean Wave</button>
+      <button class="style-btn" data-style="cometTrailWave">Comet Trail Wave</button>
+      <button class="style-btn" data-style="prismRefractionWave">Prism Refraction Wave</button>
     </div>
   </main>
 
@@ -242,7 +248,7 @@
     });
 
     function setStyle (name) {
-      const isDynamic = !!dynamicWaveConfigs[name];
+      const isDynamic = !!dynamicWaveConfigs[ name ];
       scenes.forEach((s) => s.classList.toggle('active', isDynamic ? s.id === 'wave-dynamic' : s.id === `wave-${name}`));
       if (isDynamic) renderDynamicWave(name);
       if (name === 'flowing') startFlow();
@@ -307,11 +313,17 @@
       riverCurrentWave: { layers: [ { baseline: 135, amp: 20, jagged: false, color: '#0ea5e9', duration: 9, height: 35, opacity: 0.7 } ] },
       sineGridWave: { layers: [ { baseline: 130, amp: 30, jagged: false, color: '#38bdf8', duration: 12, height: 40, opacity: 0.6 }, { baseline: 130, amp: 30, jagged: false, color: '#38bdf8', duration: 20, height: 40, opacity: 0.3 } ] },
       reactiveBeatWave: { layers: [ { baseline: 130, amp: 50, jagged: true, color: '#facc15', duration: 1.5, height: 45, opacity: 0.85 } ] },
-      desertMirageWave: { layers: [ { baseline: 140, amp: 15, jagged: false, color: '#fde68a', duration: 26, height: 30, opacity: 0.5 } ] }
+      desertMirageWave: { layers: [ { baseline: 140, amp: 15, jagged: false, color: '#fde68a', duration: 26, height: 30, opacity: 0.5 } ] },
+      frozenWave: { layers: [ { baseline: 130, amp: 20, jagged: false, color: '#bae6fd', duration: 32, height: 40, opacity: 0.6 } ] },
+      moltenGlassWave: { layers: [ { baseline: 125, amp: 35, jagged: false, color: '#fb923c', duration: 14, height: 45, opacity: 0.7 }, { baseline: 145, amp: 20, jagged: false, color: '#fde68a', duration: 18, height: 30, opacity: 0.4 } ] },
+      tropicalWave: { layers: [ { baseline: 130, amp: 40, jagged: false, color: '#22d3ee', duration: 14, height: 50, opacity: 0.75 }, { baseline: 145, amp: 25, jagged: false, color: '#34d399', duration: 18, height: 30, opacity: 0.5 } ] },
+      deepOceanWave: { layers: [ { baseline: 110, amp: 30, jagged: false, color: '#0c4a6e', duration: 34, height: 65, opacity: 0.85 } ] },
+      cometTrailWave: { layers: [ { baseline: 130, amp: 45, jagged: false, color: '#fbbf24', duration: 5, height: 40, opacity: 0.8 } ] },
+      prismRefractionWave: { layers: [ { baseline: 120, amp: 30, jagged: false, color: '#a855f7', duration: 12, height: 40, opacity: 0.5 }, { baseline: 130, amp: 30, jagged: false, color: '#22d3ee', duration: 10, height: 40, opacity: 0.4 }, { baseline: 140, amp: 30, jagged: false, color: '#f472b6', duration: 14, height: 40, opacity: 0.4 } ] }
     };
 
     function renderDynamicWave (name) {
-      const cfg = dynamicWaveConfigs[name];
+      const cfg = dynamicWaveConfigs[ name ];
       const track = document.getElementById('dynamicWaveTrack');
       track.innerHTML = '';
       cfg.layers.forEach((layer) => {

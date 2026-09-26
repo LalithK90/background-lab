@@ -216,12 +216,12 @@ Mark items `[x]` as they get implemented. Items already live in the code are pre
 - [x] 42. Sine Grid Wave
 - [x] 43. Reactive Beat Wave
 - [x] 44. Desert Mirage Wave
-- [ ] 45. Frozen Wave
-- [ ] 46. Molten Glass Wave
-- [ ] 47. Tropical Wave
-- [ ] 48. Deep Ocean Wave
-- [ ] 49. Comet Trail Wave
-- [ ] 50. Prism Refraction Wave
+- [x] 45. Frozen Wave
+- [x] 46. Molten Glass Wave
+- [x] 47. Tropical Wave
+- [x] 48. Deep Ocean Wave
+- [x] 49. Comet Trail Wave
+- [x] 50. Prism Refraction Wave
 
 ---
 
