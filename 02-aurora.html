@@ -13,6 +13,7 @@
   <div id="background">
     <div id="auroraStage"></div>
   </div>
+  <div class="custom-tint" id="customTint" aria-hidden="true"></div>
   <div id="cursorSpotlight"></div>
 
   <nav class="navbar">
@@ -34,6 +35,8 @@
       <p class="subtitle">Explore modern animated backgrounds</p>
       <p class="tag">Aurora • CSS + Vanilla JS</p>
       <button class="btn-demo">View Demo</button>
+      <button class="btn-code" id="openCodeDrawer" type="button" aria-haspopup="dialog" aria-controls="codeDrawer"
+        aria-expanded="false">View code</button>
     </div>
 
     <div class="style-selector" id="styleSelector">
@@ -89,6 +92,24 @@
       <button class="style-btn" data-style="auroraPrism">Aurora Prism</button>
     </div>
   </main>
+
+  <dialog class="code-drawer" id="codeDrawer" aria-labelledby="codeDrawerTitle">
+    <header class="code-drawer__header">
+      <div>
+        <p class="code-drawer__eyebrow">LIVE CUSTOMIZER</p>
+        <h2 id="codeDrawerTitle" tabindex="-1">Customize and copy</h2>
+        <p class="code-drawer__style" id="selectedStyleName"></p>
+      </div>
+      <button class="code-drawer__close" id="closeCodeDrawer" type="button" aria-label="Close code drawer">×</button>
+    </header>
+    <section class="code-drawer__controls" id="parameterControls" aria-label="Background parameters"></section>
+    <div class="code-drawer__export">
+      <div class="code-drawer__export-heading"><label for="generatedHtml">Standalone HTML</label><button
+          class="btn-copy" id="copyFullHtml" type="button">Copy full HTML</button></div>
+      <textarea id="generatedHtml" readonly spellcheck="false" aria-label="Generated standalone HTML"></textarea>
+      <p class="code-drawer__status" id="copyStatus" role="status" aria-live="polite"></p>
+    </div>
+  </dialog>
 
   <script>
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -232,6 +253,143 @@
     });
 
     renderAurora('purple');
+  </script>
+  <script>
+    (() => {
+      const cssFile = '02-aurora.css';
+      const selector = document.getElementById('styleSelector');
+      const drawer = document.getElementById('codeDrawer');
+      const output = document.getElementById('generatedHtml');
+      const status = document.getElementById('copyStatus');
+      const tint = document.getElementById('customTint');
+      const background = document.getElementById('background');
+      const defaults = { tint: '#ffffff', mix: 0, speed: 1, brightness: 1 };
+      const bounds = { mix: [ 0, 0.75 ], speed: [ 0.25, 2.5 ], brightness: [ 0.5, 1.5 ] };
+      const validColor = (value) => /^#[0-9a-f]{6}$/i.test(value || '');
+      const clamp = (value, key) => Math.min(bounds[ key ][ 1 ], Math.max(bounds[ key ][ 0 ], Number(value)));
+      const initial = (() => { try { return JSON.parse(document.body.dataset.exportState || 'null'); } catch { return null; } })();
+      let style = selector.querySelector('.style-btn.active').dataset.style;
+      let settings = { ...defaults };
+      let restoring = true;
+      const requested = initial && selector.querySelector(`.style-btn[data-style="${CSS.escape(initial.style)}"]`);
+      if (requested) requested.click();
+      if (requested) style = requested.dataset.style;
+      restoring = false;
+
+      function applySettings () {
+        tint.style.backgroundColor = settings.tint;
+        tint.style.opacity = String(settings.mix);
+        background.style.filter = settings.brightness === 1 ? '' : `brightness(${settings.brightness})`;
+        window.BackgroundLabSpeed = settings.speed;
+        document.getAnimations().forEach((animation) => {
+          if (animation.effect && animation.effect.getTiming().iterations === Infinity) animation.playbackRate = settings.speed;
+        });
+        document.body.dataset.exportState = JSON.stringify({ schemaVersion: 1, style, settings });
+      }
+
+      function addControl (key, labelText, type, min, max, step) {
+        const label = document.createElement('label');
+        label.className = type === 'range' ? 'code-control code-control--range' : 'code-control';
+        label.htmlFor = `drawer-${key}`;
+        const title = document.createElement('span');
+        title.textContent = labelText;
+        const input = document.createElement('input');
+        input.id = `drawer-${key}`;
+        input.type = type;
+        if (type === 'range') { input.min = min; input.max = max; input.step = step; }
+        input.value = settings[ key ];
+        if (type === 'range') {
+          const value = document.createElement('output');
+          value.htmlFor = input.id;
+          value.value = Number(settings[ key ]).toFixed(2);
+          title.append(' ', value);
+          input.addEventListener('input', () => { settings[ key ] = clamp(input.value, key); value.value = Number(settings[ key ]).toFixed(2); applySettings(); refresh(); });
+        } else {
+          input.addEventListener('input', () => {
+            if (!validColor(input.value)) return;
+            settings[ key ] = input.value;
+            if (key === 'tint' && settings.mix === 0) {
+              settings.mix = 0.2;
+              const strength = document.getElementById('drawer-mix');
+              if (strength) { strength.value = '0.2'; strength.closest('label').querySelector('output').value = '0.20'; }
+            }
+            applySettings(); refresh();
+          });
+        }
+        label.append(title, input);
+        document.getElementById('parameterControls').appendChild(label);
+      }
+
+      function renderControls () {
+        const controls = document.getElementById('parameterControls');
+        controls.innerHTML = '';
+        document.getElementById('selectedStyleName').textContent = selector.querySelector('.style-btn.active').textContent;
+        addControl('tint', 'Color tint', 'color');
+        addControl('mix', 'Tint strength', 'range', 0, 0.75, 0.01);
+        addControl('speed', 'Animation speed', 'range', 0.25, 2.5, 0.05);
+        addControl('brightness', 'Brightness', 'range', 0.5, 1.5, 0.05);
+      }
+
+      function inlinePageCss (clone) {
+        const sheet = Array.from(document.styleSheets).find((item) => item.href ? item.href.endsWith(`/${cssFile}`) : item.ownerNode && item.ownerNode.dataset.exportedStyles === cssFile);
+        if (!sheet) throw new Error('Page stylesheet not found.');
+        const styleTag = document.createElement('style');
+        styleTag.dataset.exportedStyles = cssFile;
+        styleTag.textContent = Array.from(sheet.cssRules, (rule) => rule.cssText).join('\n');
+        const link = clone.querySelector(`link[rel="stylesheet"][href$="${cssFile}"]`);
+        const existingStyle = clone.querySelector(`style[data-exported-styles="${cssFile}"]`);
+        if (link) link.replaceWith(styleTag); else if (existingStyle) existingStyle.replaceWith(styleTag); else clone.querySelector('head').appendChild(styleTag);
+      }
+
+      function buildHtml () {
+        const clone = document.documentElement.cloneNode(true);
+        clone.querySelector('body').dataset.exportState = JSON.stringify({ schemaVersion: 1, style, settings });
+        clone.querySelector('#codeDrawer').removeAttribute('open');
+        clone.querySelector('#openCodeDrawer').setAttribute('aria-expanded', 'false');
+        clone.querySelector('#generatedHtml').textContent = '';
+        clone.querySelector('#copyStatus').textContent = '';
+        clone.querySelectorAll('.click-ripple').forEach((node) => node.remove());
+        clone.querySelector('#cursorSpotlight').classList.remove('visible');
+        inlinePageCss(clone);
+        return `<!doctype html>\n${clone.outerHTML}`;
+      }
+
+      function refresh () {
+        try { output.value = buildHtml(); status.textContent = ''; }
+        catch (error) { output.value = ''; status.textContent = `Could not generate HTML: ${error.message}`; }
+      }
+
+      selector.addEventListener('click', (event) => {
+        const button = event.target.closest('.style-btn');
+        if (!button || restoring) return;
+        style = button.dataset.style;
+        settings = { ...defaults };
+        renderControls(); applySettings();
+        if (drawer.open) refresh();
+      });
+
+      document.getElementById('openCodeDrawer').addEventListener('click', () => {
+        renderControls(); applySettings(); drawer.showModal();
+        document.getElementById('openCodeDrawer').setAttribute('aria-expanded', 'true');
+        document.getElementById('codeDrawerTitle').focus(); refresh();
+      });
+      const closeDrawer = () => { if (drawer.open) drawer.close(); document.getElementById('openCodeDrawer').setAttribute('aria-expanded', 'false'); document.getElementById('openCodeDrawer').focus(); };
+      document.getElementById('closeCodeDrawer').addEventListener('click', closeDrawer);
+      drawer.addEventListener('keydown', (event) => { if (event.key === 'Escape') { event.preventDefault(); closeDrawer(); } });
+      drawer.addEventListener('click', (event) => { if (event.target === drawer) closeDrawer(); });
+      drawer.addEventListener('close', () => document.getElementById('openCodeDrawer').setAttribute('aria-expanded', 'false'));
+      document.getElementById('copyFullHtml').addEventListener('click', async () => {
+        refresh();
+        if (!output.value) return;
+        try { await navigator.clipboard.writeText(output.value); status.textContent = 'Full HTML copied.'; }
+        catch { output.focus(); output.select(); status.textContent = 'Clipboard unavailable. The HTML is selected; copy it manually.'; }
+      });
+
+      settings = { ...defaults, ...(initial && initial.style === style ? initial.settings : {}) };
+      if (!validColor(settings.tint)) settings.tint = defaults.tint;
+      Object.keys(bounds).forEach((key) => { if (!Number.isFinite(Number(settings[ key ]))) settings[ key ] = defaults[ key ]; else settings[ key ] = clamp(settings[ key ], key); });
+      renderControls(); applySettings();
+    })();
   </script>
 </body>
 

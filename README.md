@@ -29,6 +29,15 @@ Every page shares the same design language: fixed navbar to jump between pages, 
 content card, a style-selector to switch variations **without reloading**, mouse-reactive parallax +
 cursor spotlight + click ripple, and respect for `prefers-reduced-motion`.
 
+## Customize and copy
+
+Choose a variation, then select **View code** to open its live customizer. Adjust the color tint,
+speed, brightness, and available renderer-specific controls such as particle density, blob size,
+wave amplitude, or shader scale to preview changes immediately. **Copy full HTML** exports the
+complete showcase page with the selected variation and settings, its stylesheet embedded, and
+required CDN libraries left as external links. If clipboard access is blocked by the browser, the
+generated HTML is selected for manual copying.
+
 See [`DESIGN-CATALOG.md`](DESIGN-CATALOG.md) for the full catalog of 350 variations.
 
 ## Using a background in your own project

@@ -11,6 +11,7 @@
 <body>
 
   <div id="background"><canvas id="glCanvas"></canvas></div>
+  <div class="custom-tint" id="customTint" aria-hidden="true"></div>
   <div id="cursorSpotlight"></div>
 
   <nav class="navbar">
@@ -32,6 +33,8 @@
       <p class="subtitle">Explore modern animated backgrounds</p>
       <p class="tag">WebGL • Three.js</p>
       <button class="btn-demo">View Demo</button>
+      <button class="btn-code" id="openCodeDrawer" type="button" aria-haspopup="dialog" aria-controls="codeDrawer"
+        aria-expanded="false">View code</button>
     </div>
 
     <div class="style-selector" id="styleSelector">
@@ -87,6 +90,24 @@
       <button class="style-btn" data-style="tunnelWarpShader">Tunnel Warp Shader</button>
     </div>
   </main>
+
+  <dialog class="code-drawer" id="codeDrawer" aria-labelledby="codeDrawerTitle">
+    <header class="code-drawer__header">
+      <div>
+        <p class="code-drawer__eyebrow">LIVE CUSTOMIZER</p>
+        <h2 id="codeDrawerTitle" tabindex="-1">Customize and copy</h2>
+        <p class="code-drawer__style" id="selectedStyleName"></p>
+      </div>
+      <button class="code-drawer__close" id="closeCodeDrawer" type="button" aria-label="Close code drawer">×</button>
+    </header>
+    <section class="code-drawer__controls" id="parameterControls" aria-label="Background parameters"></section>
+    <div class="code-drawer__export">
+      <div class="code-drawer__export-heading"><label for="generatedHtml">Standalone HTML</label><button
+          class="btn-copy" id="copyFullHtml" type="button">Copy full HTML</button></div>
+      <textarea id="generatedHtml" readonly spellcheck="false" aria-label="Generated standalone HTML"></textarea>
+      <p class="code-drawer__status" id="copyStatus" role="status" aria-live="polite"></p>
+    </div>
+  </dialog>
 
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
   <script>
@@ -452,6 +473,9 @@
         u_colorC: { value: new THREE.Color('#a7f3d0') }
       };
 
+      window.BackgroundLabGetShaderScale = () => uniforms.u_scale.value;
+      window.BackgroundLabSetShaderScale = (scale) => { uniforms.u_scale.value = scale; };
+
       let material = null;
       let mesh = null;
 
@@ -499,10 +523,14 @@
       });
 
       let rafId = null;
-      let clockStart = performance.now();
+      let previousFrameTime = performance.now();
+      let shaderTime = 0;
 
       function loop (now) {
-        uniforms.u_time.value = (now - clockStart) / 1000;
+        const elapsed = Math.min(now - previousFrameTime, 100);
+        previousFrameTime = now;
+        shaderTime += elapsed / 1000 * (window.BackgroundLabSpeed || 1);
+        uniforms.u_time.value = shaderTime;
         if (!reducedMotion) updateParallax();
         renderer.render(scene, camera);
         rafId = requestAnimationFrame(loop);
@@ -512,6 +540,7 @@
         resize();
         if (rafId) cancelAnimationFrame(rafId);
         if (reducedMotion) { renderer.render(scene, camera); return; }
+        previousFrameTime = performance.now();
         rafId = requestAnimationFrame(loop);
       }
 
@@ -525,11 +554,79 @@
 
       document.addEventListener('visibilitychange', () => {
         if (document.hidden) { if (rafId) { cancelAnimationFrame(rafId); rafId = null; } }
-        else if (!rafId && !reducedMotion) { rafId = requestAnimationFrame(loop); }
+        else if (!rafId && !reducedMotion) { previousFrameTime = performance.now(); rafId = requestAnimationFrame(loop); }
       });
 
       setShader('gradientShader');
       start();
+    })();
+  </script>
+  <script>
+    (() => {
+      const cssFile = '07-webgl.css';
+      const selector = document.getElementById('styleSelector');
+      const drawer = document.getElementById('codeDrawer');
+      const output = document.getElementById('generatedHtml');
+      const status = document.getElementById('copyStatus');
+      const tint = document.getElementById('customTint');
+      const background = document.getElementById('background');
+      const defaults = { tint: '#ffffff', mix: 0, speed: 1, brightness: 1, scale: 2.5 };
+      const limits = { mix: [ 0, 0.75 ], speed: [ 0.25, 2.5 ], brightness: [ 0.5, 1.5 ], scale: [ 0.5, 8 ] };
+      const clamp = (value, key) => Math.min(limits[ key ][ 1 ], Math.max(limits[ key ][ 0 ], Number(value)));
+      const initial = (() => { try { return JSON.parse(document.body.dataset.exportState || 'null'); } catch { return null; } })();
+      let style = selector.querySelector('.style-btn.active').dataset.style;
+      const requested = initial && selector.querySelector(`.style-btn[data-style="${CSS.escape(initial.style)}"]`);
+      if (requested) requested.click();
+      if (requested) style = requested.dataset.style;
+      defaults.scale = window.BackgroundLabGetShaderScale ? window.BackgroundLabGetShaderScale() : defaults.scale;
+      let settings = { ...defaults };
+      function apply () {
+        tint.style.backgroundColor = settings.tint; tint.style.opacity = String(settings.mix);
+        background.style.filter = settings.brightness === 1 ? '' : `brightness(${settings.brightness})`;
+        if (window.BackgroundLabSetShaderScale) window.BackgroundLabSetShaderScale(settings.scale);
+        window.BackgroundLabSpeed = settings.speed;
+        document.getAnimations().forEach((animation) => { if (animation.effect && animation.effect.getTiming().iterations === Infinity) animation.playbackRate = settings.speed; });
+        document.body.dataset.exportState = JSON.stringify({ schemaVersion: 1, style, settings });
+      }
+      function renderControls () {
+        const controls = document.getElementById('parameterControls'); controls.innerHTML = '';
+        document.getElementById('selectedStyleName').textContent = selector.querySelector('.style-btn.active').textContent;
+        [ { key: 'tint', label: 'Color tint', type: 'color' }, { key: 'mix', label: 'Tint strength', type: 'range', min: 0, max: 0.75, step: 0.01 }, { key: 'speed', label: 'Animation speed', type: 'range', min: 0.25, max: 2.5, step: 0.05 }, { key: 'brightness', label: 'Brightness', type: 'range', min: 0.5, max: 1.5, step: 0.05 }, { key: 'scale', label: 'Shader scale', type: 'range', min: 0.5, max: 8, step: 0.1 } ].forEach((spec) => {
+          const label = document.createElement('label'); label.className = spec.type === 'range' ? 'code-control code-control--range' : 'code-control'; label.htmlFor = `drawer-${spec.key}`;
+          const title = document.createElement('span'); title.textContent = spec.label;
+          const input = document.createElement('input'); input.id = `drawer-${spec.key}`; input.type = spec.type; input.value = settings[ spec.key ];
+          if (spec.type === 'range') { input.min = spec.min; input.max = spec.max; input.step = spec.step; }
+          let valueOutput = null;
+          const update = () => { settings[ spec.key ] = spec.type === 'color' ? input.value : clamp(input.value, spec.key); if (spec.key === 'tint' && settings.mix === 0) { settings.mix = 0.2; const strength = document.getElementById('drawer-mix'); if (strength) { strength.value = '0.2'; strength.closest('label').querySelector('output').value = '0.20'; } } if (valueOutput) valueOutput.value = Number(settings[ spec.key ]).toFixed(2); apply(); refresh(); };
+          if (spec.type === 'range') { valueOutput = document.createElement('output'); valueOutput.value = Number(settings[ spec.key ]).toFixed(2); title.append(' ', valueOutput); }
+          input.addEventListener('input', update); label.append(title, input); controls.appendChild(label);
+        });
+      }
+      function buildHtml () {
+        const clone = document.documentElement.cloneNode(true);
+        clone.querySelector('body').dataset.exportState = JSON.stringify({ schemaVersion: 1, style, settings });
+        clone.querySelector('#codeDrawer').removeAttribute('open'); clone.querySelector('#openCodeDrawer').setAttribute('aria-expanded', 'false');
+        clone.querySelector('#generatedHtml').textContent = ''; clone.querySelector('#copyStatus').textContent = '';
+        clone.querySelectorAll('.click-ripple').forEach((node) => node.remove()); clone.querySelector('#cursorSpotlight').classList.remove('visible');
+        const sheet = Array.from(document.styleSheets).find((item) => item.href ? item.href.endsWith(`/${cssFile}`) : item.ownerNode && item.ownerNode.dataset.exportedStyles === cssFile);
+        if (!sheet) throw new Error('Page stylesheet was not found.');
+        const styleTag = document.createElement('style'); styleTag.dataset.exportedStyles = cssFile; styleTag.textContent = Array.from(sheet.cssRules, (rule) => rule.cssText).join('\n');
+        const link = clone.querySelector(`link[rel="stylesheet"][href$="${cssFile}"]`);
+        const existingStyle = clone.querySelector(`style[data-exported-styles="${cssFile}"]`);
+        if (link) link.replaceWith(styleTag); else if (existingStyle) existingStyle.replaceWith(styleTag); else clone.querySelector('head').appendChild(styleTag);
+        return `<!doctype html>\n${clone.outerHTML}`;
+      }
+      function refresh () { try { output.value = buildHtml(); status.textContent = ''; } catch (error) { output.value = ''; status.textContent = `Could not generate HTML: ${error.message}`; } }
+      selector.addEventListener('click', (event) => { const button = event.target.closest('.style-btn'); if (!button) return; style = button.dataset.style; defaults.scale = window.BackgroundLabGetShaderScale ? window.BackgroundLabGetShaderScale() : defaults.scale; settings = { ...defaults }; renderControls(); apply(); if (drawer.open) refresh(); });
+      document.getElementById('openCodeDrawer').addEventListener('click', () => { renderControls(); apply(); drawer.showModal(); document.getElementById('openCodeDrawer').setAttribute('aria-expanded', 'true'); document.getElementById('codeDrawerTitle').focus(); refresh(); });
+      const close = () => { if (drawer.open) drawer.close(); document.getElementById('openCodeDrawer').setAttribute('aria-expanded', 'false'); document.getElementById('openCodeDrawer').focus(); };
+      document.getElementById('closeCodeDrawer').addEventListener('click', close); drawer.addEventListener('keydown', (event) => { if (event.key === 'Escape') { event.preventDefault(); close(); } }); drawer.addEventListener('click', (event) => { if (event.target === drawer) close(); });
+      drawer.addEventListener('close', () => document.getElementById('openCodeDrawer').setAttribute('aria-expanded', 'false'));
+      document.getElementById('copyFullHtml').addEventListener('click', async () => { refresh(); if (!output.value) return; try { await navigator.clipboard.writeText(output.value); status.textContent = 'Full HTML copied.'; } catch { output.focus(); output.select(); status.textContent = 'Clipboard unavailable. The HTML is selected; copy it manually.'; } });
+      settings = { ...defaults, ...(initial && initial.style === style ? initial.settings : {}) };
+      if (!/^#[0-9a-f]{6}$/i.test(settings.tint)) settings.tint = defaults.tint;
+      Object.keys(limits).forEach((key) => { if (!Number.isFinite(Number(settings[ key ]))) settings[ key ] = defaults[ key ]; else settings[ key ] = clamp(settings[ key ], key); });
+      renderControls(); apply();
     })();
   </script>
 </body>

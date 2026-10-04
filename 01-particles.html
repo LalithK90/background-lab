@@ -34,6 +34,8 @@
       <p class="subtitle">Explore modern animated backgrounds</p>
       <p class="tag">Particles • tsParticles</p>
       <button class="btn-demo">View Demo</button>
+      <button class="btn-code" id="openCodeDrawer" type="button" aria-haspopup="dialog" aria-controls="codeDrawer"
+        aria-expanded="false">View code</button>
     </div>
 
     <div class="style-selector" id="styleSelector">
@@ -89,6 +91,47 @@
       <button class="style-btn" data-style="auroraParticles">Aurora Particles</button>
     </div>
   </main>
+
+  <dialog class="code-drawer" id="codeDrawer" aria-labelledby="codeDrawerTitle">
+    <header class="code-drawer__header">
+      <div>
+        <p class="code-drawer__eyebrow">LIVE CUSTOMIZER</p>
+        <h2 id="codeDrawerTitle" tabindex="-1">Customize and copy</h2>
+        <p class="code-drawer__style" id="selectedStyleName"></p>
+      </div>
+      <button class="code-drawer__close" id="closeCodeDrawer" type="button" aria-label="Close code drawer">×</button>
+    </header>
+
+    <section class="code-drawer__controls" aria-label="Background parameters">
+      <label class="code-control" for="particleBackgroundColor">
+        <span>Background</span><input id="particleBackgroundColor" type="color" />
+      </label>
+      <label class="code-control" for="particleColor">
+        <span>Particle color</span><input id="particleColor" type="color" />
+      </label>
+      <label class="code-control code-control--range" for="particleSpeed">
+        <span>Movement speed <output id="particleSpeedValue"></output></span>
+        <input id="particleSpeed" type="range" min="0.1" max="16" step="0.1" />
+      </label>
+      <label class="code-control code-control--range" for="particleAmount">
+        <span>Particle count <output id="particleAmountValue"></output></span>
+        <input id="particleAmount" type="range" min="10" max="300" step="1" />
+      </label>
+      <label class="code-control code-control--range" for="particleOpacity">
+        <span>Opacity <output id="particleOpacityValue"></output></span>
+        <input id="particleOpacity" type="range" min="0.1" max="1" step="0.05" />
+      </label>
+    </section>
+
+    <div class="code-drawer__export">
+      <div class="code-drawer__export-heading">
+        <label for="generatedHtml">Standalone HTML</label>
+        <button class="btn-copy" id="copyFullHtml" type="button">Copy full HTML</button>
+      </div>
+      <textarea id="generatedHtml" readonly spellcheck="false" aria-label="Generated standalone HTML"></textarea>
+      <p class="code-drawer__status" id="copyStatus" role="status" aria-live="polite"></p>
+    </div>
+  </dialog>
 
   <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
   <script>
@@ -899,28 +942,239 @@
       }
     };
 
-    async function loadStyle (name) {
-      const container = document.getElementById('tsparticles');
-      container.classList.toggle('glow', name === 'neon');
-      await tsParticles.load({ id: 'tsparticles', options: configs[ name ] });
+    const codeDrawer = document.getElementById('codeDrawer');
+    const generatedHtml = document.getElementById('generatedHtml');
+    const codeStatus = document.getElementById('copyStatus');
+    const speedInput = document.getElementById('particleSpeed');
+    const amountInput = document.getElementById('particleAmount');
+    const opacityInput = document.getElementById('particleOpacity');
+    let updateTimer = null;
+    let currentContainer = null;
+
+    function readInitialExportState () {
+      try {
+        const state = JSON.parse(document.body.dataset.exportState || 'null');
+        return state && configs[ state.style ] ? state : null;
+      } catch {
+        return null;
+      }
     }
 
-    document.getElementById('styleSelector').addEventListener('click', (e) => {
-      const btn = e.target.closest('.style-btn');
-      if (!btn) return;
-      document.querySelectorAll('.style-btn').forEach((b) => b.classList.remove('active'));
-      btn.classList.add('active');
-      loadStyle(btn.dataset.style);
+    function asNumber (value, fallback) {
+      if (typeof value === 'number' && Number.isFinite(value)) return value;
+      if (value && typeof value === 'object') {
+        const min = Number(value.min);
+        const max = Number(value.max);
+        if (Number.isFinite(min) && Number.isFinite(max)) return (min + max) / 2;
+      }
+      return fallback;
+    }
+
+    function asColor (value, fallback) {
+      const candidate = Array.isArray(value) ? value[ 0 ] : value;
+      return typeof candidate === 'string' && /^#[0-9a-f]{6}$/i.test(candidate) ? candidate : fallback;
+    }
+
+    function getStyleDefaults (name) {
+      const config = configs[ name ];
+      return {
+        background: asColor(config.background && config.background.color, '#0a0a12'),
+        color: asColor(config.particles.color && config.particles.color.value, '#ffffff'),
+        speed: asNumber(config.particles.move && config.particles.move.speed, 1),
+        amount: config.particles.number.value,
+        opacity: asNumber(config.particles.opacity && config.particles.opacity.value, 0.75)
+      };
+    }
+
+    function clamp (value, min, max, fallback) {
+      const number = Number(value);
+      return Number.isFinite(number) ? Math.min(max, Math.max(min, number)) : fallback;
+    }
+
+    function readSettings (style, input) {
+      const defaults = getStyleDefaults(style);
+      return {
+        background: asColor(input && input.background, defaults.background),
+        color: asColor(input && input.color, defaults.color),
+        speed: clamp(input && input.speed, 0.1, 16, defaults.speed),
+        amount: Math.round(clamp(input && input.amount, 10, 300, defaults.amount)),
+        opacity: clamp(input && input.opacity, 0.1, 1, defaults.opacity)
+      };
+    }
+
+    function serializeExportState (style, settings) {
+      const state = { schemaVersion: 1, style, settings };
+      document.body.dataset.exportState = JSON.stringify(state);
+      return state;
+    }
+
+    const initialExportState = readInitialExportState();
+    let currentStyle = initialExportState ? initialExportState.style : 'classic';
+    let currentSettings = readSettings(currentStyle, initialExportState && initialExportState.settings);
+
+    function syncStyleButtons () {
+      document.querySelectorAll('.style-btn').forEach((button) => {
+        button.classList.toggle('active', button.dataset.style === currentStyle);
+      });
+    }
+
+    function syncControls () {
+      document.getElementById('selectedStyleName').textContent = document.querySelector(`.style-btn[data-style="${currentStyle}"]`).textContent;
+      document.getElementById('particleBackgroundColor').value = currentSettings.background;
+      document.getElementById('particleColor').value = currentSettings.color;
+      speedInput.value = currentSettings.speed;
+      amountInput.value = currentSettings.amount;
+      opacityInput.value = currentSettings.opacity;
+      document.getElementById('particleSpeedValue').value = currentSettings.speed.toFixed(1);
+      document.getElementById('particleAmountValue').value = String(currentSettings.amount);
+      document.getElementById('particleOpacityValue').value = currentSettings.opacity.toFixed(2);
+    }
+
+    async function loadStyle (name, settings = currentSettings) {
+      if (!configs[ name ]) return;
+      currentStyle = name;
+      currentSettings = readSettings(name, settings);
+      syncStyleButtons();
+      syncControls();
+      serializeExportState(currentStyle, currentSettings);
+
+      if (currentContainer) {
+        await currentContainer.destroy();
+        currentContainer = null;
+      }
+
+      const options = JSON.parse(JSON.stringify(configs[ name ]));
+      options.background.color = currentSettings.background;
+      options.particles.number.value = currentSettings.amount;
+      options.particles.color.value = currentSettings.color;
+      options.particles.opacity = options.particles.opacity || {};
+      options.particles.opacity.value = currentSettings.opacity;
+      if (options.particles.links && options.particles.links.enable) {
+        options.particles.links.color = currentSettings.color;
+      }
+      if (options.particles.move && options.particles.move.enable) {
+        options.particles.move.speed = currentSettings.speed;
+      }
+
+      document.getElementById('tsparticles').classList.toggle('glow', name === 'neon');
+      currentContainer = await tsParticles.load({ id: 'tsparticles', options });
+      if (document.hidden && currentContainer) currentContainer.pause();
+      if (codeDrawer.open) refreshGeneratedHtml();
+    }
+
+    function readControls () {
+      return {
+        background: document.getElementById('particleBackgroundColor').value,
+        color: document.getElementById('particleColor').value,
+        speed: speedInput.value,
+        amount: amountInput.value,
+        opacity: opacityInput.value
+      };
+    }
+
+    function stylesheetText () {
+      const sheet = Array.from(document.styleSheets).find((item) => item.href ? item.href.endsWith('/01-particles.css') : item.ownerNode && item.ownerNode.dataset.exportedStyles === '01-particles.css');
+      if (!sheet) throw new Error('The page stylesheet was not found.');
+      return Array.from(sheet.cssRules, (rule) => rule.cssText).join('\n');
+    }
+
+    function buildExportHtml () {
+      const clone = document.documentElement.cloneNode(true);
+      clone.querySelector('body').dataset.exportState = JSON.stringify({ schemaVersion: 1, style: currentStyle, settings: currentSettings });
+      const drawer = clone.querySelector('#codeDrawer');
+      drawer.removeAttribute('open');
+      clone.querySelector('#openCodeDrawer').setAttribute('aria-expanded', 'false');
+      clone.querySelector('#generatedHtml').textContent = '';
+      clone.querySelector('#copyStatus').textContent = '';
+      clone.querySelector('#cursorSpotlight').classList.remove('visible');
+
+      const inlineStyle = document.createElement('style');
+      inlineStyle.dataset.exportedStyles = '01-particles.css';
+      inlineStyle.textContent = stylesheetText();
+      const stylesheetLink = clone.querySelector('link[rel="stylesheet"][href$="01-particles.css"]');
+      const existingStyle = clone.querySelector('style[data-exported-styles="01-particles.css"]');
+      if (stylesheetLink) stylesheetLink.replaceWith(inlineStyle);
+      else if (existingStyle) existingStyle.replaceWith(inlineStyle);
+      else clone.querySelector('head').appendChild(inlineStyle);
+      return `<!doctype html>\n${clone.outerHTML}`;
+    }
+
+    function refreshGeneratedHtml () {
+      try {
+        generatedHtml.value = buildExportHtml();
+        codeStatus.textContent = '';
+      } catch (error) {
+        generatedHtml.value = '';
+        codeStatus.textContent = `Could not generate HTML: ${error.message}`;
+      }
+    }
+
+    document.getElementById('openCodeDrawer').addEventListener('click', () => {
+      syncControls();
+      codeDrawer.showModal();
+      document.getElementById('openCodeDrawer').setAttribute('aria-expanded', 'true');
+      document.getElementById('codeDrawerTitle').focus();
+      refreshGeneratedHtml();
+    });
+
+    function closeCodeDrawer () {
+      if (codeDrawer.open) codeDrawer.close();
+      document.getElementById('openCodeDrawer').setAttribute('aria-expanded', 'false');
+      document.getElementById('openCodeDrawer').focus();
+    }
+
+    document.getElementById('closeCodeDrawer').addEventListener('click', closeCodeDrawer);
+    codeDrawer.addEventListener('keydown', (event) => { if (event.key === 'Escape') { event.preventDefault(); closeCodeDrawer(); } });
+    codeDrawer.addEventListener('click', (event) => {
+      if (event.target === codeDrawer) closeCodeDrawer();
+    });
+    codeDrawer.addEventListener('close', () => {
+      document.getElementById('openCodeDrawer').setAttribute('aria-expanded', 'false');
+    });
+
+    function queueSettingsUpdate () {
+      currentSettings = readSettings(currentStyle, readControls());
+      syncControls();
+      serializeExportState(currentStyle, currentSettings);
+      if (codeDrawer.open) refreshGeneratedHtml();
+      clearTimeout(updateTimer);
+      updateTimer = setTimeout(() => loadStyle(currentStyle, currentSettings), 100);
+    }
+
+    [ 'particleBackgroundColor', 'particleColor', 'particleSpeed', 'particleAmount', 'particleOpacity' ].forEach((id) => {
+      document.getElementById(id).addEventListener('input', queueSettingsUpdate);
+    });
+
+    document.getElementById('styleSelector').addEventListener('click', (event) => {
+      const button = event.target.closest('.style-btn');
+      if (!button) return;
+      clearTimeout(updateTimer);
+      loadStyle(button.dataset.style, getStyleDefaults(button.dataset.style));
+    });
+
+    document.getElementById('copyFullHtml').addEventListener('click', async () => {
+      refreshGeneratedHtml();
+      if (!generatedHtml.value) return;
+      try {
+        await navigator.clipboard.writeText(generatedHtml.value);
+        codeStatus.textContent = 'Full HTML copied.';
+      } catch {
+        generatedHtml.focus();
+        generatedHtml.select();
+        codeStatus.textContent = 'Clipboard access is unavailable. The HTML is selected; copy it manually.';
+      }
     });
 
     document.addEventListener('visibilitychange', () => {
-      const instance = tsParticles.domItem(0);
+      const instance = currentContainer || tsParticles.domItem(0);
       if (!instance) return;
       if (document.hidden) instance.pause();
       else instance.play();
     });
 
-    loadStyle('classic');
+    syncStyleButtons();
+    syncControls();
+    loadStyle(currentStyle, currentSettings);
   </script>
 </body>
 
