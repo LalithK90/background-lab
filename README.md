@@ -38,8 +38,6 @@ complete showcase page with the selected variation and settings, its stylesheet 
 required CDN libraries left as external links. If clipboard access is blocked by the browser, the
 generated HTML is selected for manual copying.
 
-See [`DESIGN-CATALOG.md`](DESIGN-CATALOG.md) for the full catalog of 350 variations.
-
 ## Using a background in your own project
 
 1. Copy the page you want (e.g. `02-aurora.html`) and its same-named CSS file (`02-aurora.css`).
