@@ -41,6 +41,50 @@
       <button class="style-btn" data-style="waveShader">Wave Shader</button>
       <button class="style-btn" data-style="blobsShader">Organic Blobs</button>
       <button class="style-btn" data-style="mouseShader">Interactive Mouse</button>
+      <button class="style-btn" data-style="auroraShader">Aurora Shader</button>
+      <button class="style-btn" data-style="starfieldShader">Starfield Shader</button>
+      <button class="style-btn" data-style="metaballShader">Metaball Shader</button>
+      <button class="style-btn" data-style="glassRefractionShader">Glass Refraction Shader</button>
+      <button class="style-btn" data-style="firePlasmaShader">Fire Plasma Shader</button>
+      <button class="style-btn" data-style="voronoiShader">Voronoi Shader</button>
+      <button class="style-btn" data-style="fractalNoiseShader">Fractal Noise Shader</button>
+      <button class="style-btn" data-style="causticsShader">Caustics Shader</button>
+      <button class="style-btn" data-style="marbleShader">Marble Shader</button>
+      <button class="style-btn" data-style="nebulaShader">Nebula Shader</button>
+      <button class="style-btn" data-style="oceanSurfaceShader">Ocean Surface Shader</button>
+      <button class="style-btn" data-style="lavaShader">Lava Shader</button>
+      <button class="style-btn" data-style="crystalShader">Crystal Shader</button>
+      <button class="style-btn" data-style="hologramShader">Hologram Shader</button>
+      <button class="style-btn" data-style="distortionRippleShader">Distortion Ripple Shader</button>
+      <button class="style-btn" data-style="kaleidoscopeShader">Kaleidoscope Shader</button>
+      <button class="style-btn" data-style="smokeShader">Smoke Shader</button>
+      <button class="style-btn" data-style="galaxySpiralShader">Galaxy Spiral Shader</button>
+      <button class="style-btn" data-style="electricFieldShader">Electric Field Shader</button>
+      <button class="style-btn" data-style="iridescentShader">Iridescent Shader</button>
+      <button class="style-btn" data-style="terrainHeightShader">Terrain Height Shader</button>
+      <button class="style-btn" data-style="particleCloudShader">Particle Cloud Shader</button>
+      <button class="style-btn" data-style="raymarchedSphere">Raymarched Sphere</button>
+      <button class="style-btn" data-style="chromaticAberrationShader">Chromatic Aberration Shader</button>
+      <button class="style-btn" data-style="mandelbrotZoom">Mandelbrot Zoom</button>
+      <button class="style-btn" data-style="cellularGrowthShader">Cellular Growth Shader</button>
+      <button class="style-btn" data-style="waterRippleShader">Water Ripple Shader</button>
+      <button class="style-btn" data-style="neonGridShader">Neon Grid Shader</button>
+      <button class="style-btn" data-style="plasmaStormShader">Plasma Storm Shader</button>
+      <button class="style-btn" data-style="refractiveGlassSphere">Refractive Glass Sphere</button>
+      <button class="style-btn" data-style="auroraRibbonShader">Aurora Ribbon Shader</button>
+      <button class="style-btn" data-style="sunsetSkyShader">Sunset Sky Shader</button>
+      <button class="style-btn" data-style="deepSpaceShader">Deep Space Shader</button>
+      <button class="style-btn" data-style="quantumFieldShader">Quantum Field Shader</button>
+      <button class="style-btn" data-style="metallicSheenShader">Metallic Sheen Shader</button>
+      <button class="style-btn" data-style="liquidMetalShader">Liquid Metal Shader</button>
+      <button class="style-btn" data-style="interferencePatternShader">Interference Pattern Shader</button>
+      <button class="style-btn" data-style="volumetricFogShader">Volumetric Fog Shader</button>
+      <button class="style-btn" data-style="prismLightShader">Prism Light Shader</button>
+      <button class="style-btn" data-style="ripplingSilkShader">Rippling Silk Shader</button>
+      <button class="style-btn" data-style="magmaFlowShader">Magma Flow Shader</button>
+      <button class="style-btn" data-style="starNurseryShader">Star Nursery Shader</button>
+      <button class="style-btn" data-style="binaryStarShader">Binary Star Shader</button>
+      <button class="style-btn" data-style="tunnelWarpShader">Tunnel Warp Shader</button>
     </div>
   </main>
 
@@ -189,10 +233,223 @@
     `
       };
 
+      const proceduralFragmentShader = `
+        varying vec2 vUv;
+        uniform float u_time;
+        uniform float u_speed;
+        uniform float u_scale;
+        uniform int u_effect;
+        uniform vec2 u_mouse;
+        uniform vec2 u_resolution;
+        uniform vec3 u_colorA;
+        uniform vec3 u_colorB;
+        uniform vec3 u_colorC;
+
+        float hash(vec2 p) {
+          return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+        }
+
+        float noise(vec2 p) {
+          vec2 i = floor(p);
+          vec2 f = fract(p);
+          vec2 u = f * f * (3.0 - 2.0 * f);
+          return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), u.x),
+            mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), u.x), u.y);
+        }
+
+        float fbm(vec2 p) {
+          float value = 0.0;
+          float weight = 0.5;
+          for (int i = 0; i < 4; i++) {
+            value += noise(p) * weight;
+            p *= 2.03;
+            weight *= 0.5;
+          }
+          return value;
+        }
+
+        void main() {
+          vec2 uv = vUv;
+          vec2 p = (uv - 0.5) * vec2(u_resolution.x / u_resolution.y, 1.0);
+          float time = u_time * u_speed;
+          vec3 color = u_colorA;
+          float n = 0.0;
+
+          if (u_effect == 0) {
+            float bands = sin(p.x * 4.0 + sin(p.y * 3.0 + time) + time) * 0.5 + 0.5;
+            float curtain = smoothstep(0.0, 0.7, bands) * (0.35 + 0.65 * fbm(p * 2.0 + time * 0.15));
+            color = mix(u_colorA, u_colorB, curtain);
+            color = mix(color, u_colorC, smoothstep(0.65, 1.0, curtain));
+          } else if (u_effect == 1) {
+            vec2 grid = uv * vec2(95.0, 55.0);
+            vec2 cell = floor(grid);
+            vec2 local = fract(grid) - 0.5;
+            float star = smoothstep(0.12, 0.0, length(local - (vec2(hash(cell), hash(cell + 3.1)) - 0.5)));
+            float twinkle = 0.35 + 0.65 * sin(time * 2.0 + hash(cell) * 30.0);
+            color = mix(u_colorA, u_colorB, star * twinkle);
+          } else if (u_effect == 2) {
+            float d1 = length(p - vec2(sin(time) * 0.35, cos(time * 0.7) * 0.2)) - 0.28;
+            float d2 = length(p - vec2(cos(time * 0.8) * 0.32, sin(time * 0.6) * 0.28)) - 0.24;
+            float d3 = length(p + vec2(sin(time * 0.5) * 0.25, cos(time) * 0.3)) - 0.22;
+            float blob = 1.0 - smoothstep(0.0, 0.08, min(d1, min(d2, d3)));
+            color = mix(u_colorA, u_colorB, blob);
+            color += u_colorC * pow(max(blob, 0.0), 5.0) * 0.35;
+          } else if (u_effect == 3) {
+            vec2 q = p * u_scale + vec2(time * 0.08, 0.0);
+            float cells = noise(q * 3.0 + fbm(q) * 2.0);
+            float lines = smoothstep(0.38, 0.48, abs(cells - 0.5));
+            color = mix(u_colorA, u_colorB, cells);
+            color = mix(color, u_colorC, lines * 0.45);
+          } else if (u_effect == 4) {
+            float a = sin(p.x * 8.0 + sin(p.y * 5.0 + time) * 1.2);
+            float b = cos(p.y * 9.0 - time * 0.7 + sin(p.x * 4.0));
+            float caustic = pow(max(0.0, 1.0 - abs(a * b)), 4.0);
+            color = mix(u_colorA, u_colorB, uv.y * 0.7 + 0.15);
+            color += u_colorC * caustic * 0.8;
+          } else if (u_effect == 5) {
+            float plasma = sin(p.x * 5.0 + time) + sin(p.y * 6.0 - time * 0.8) + sin((p.x + p.y) * 4.0 + time * 0.5);
+            float blend = plasma * 0.166 + 0.5;
+            color = mix(u_colorA, u_colorB, blend);
+            color = mix(color, u_colorC, smoothstep(0.62, 0.94, blend));
+          } else if (u_effect == 6) {
+            float swirl = fbm(p * u_scale + vec2(time * 0.13, -time * 0.08));
+            float vein = sin((p.x + p.y + swirl * 2.5) * 8.0);
+            float marble = smoothstep(-0.35, 0.45, vein);
+            color = mix(u_colorA, u_colorB, marble);
+            color = mix(color, u_colorC, smoothstep(0.82, 1.0, swirl));
+          } else if (u_effect == 7) {
+            float bend = fbm(p * 3.0 + time * 0.1);
+            vec2 lens = p + (uv - u_mouse) * (0.12 + bend * 0.08);
+            float sheen = 0.5 + 0.5 * sin((lens.x - lens.y) * 9.0 + bend * 8.0);
+            color = mix(u_colorA, u_colorB, sheen);
+            color = mix(color, u_colorC, pow(max(0.0, 1.0 - length(p) * 0.7), 4.0));
+          } else if (u_effect == 8) {
+            vec2 q = p * u_scale;
+            vec2 cell = floor(q);
+            float nearest = 10.0;
+            float second = 10.0;
+            for (int x = -1; x <= 1; x++) {
+              for (int y = -1; y <= 1; y++) {
+                vec2 neighbor = vec2(float(x), float(y));
+                vec2 point = neighbor + vec2(hash(cell + neighbor), hash(cell + neighbor + 8.2));
+                float d = length(neighbor + point - fract(q));
+                if (d < nearest) { second = nearest; nearest = d; }
+                else if (d < second) { second = d; }
+              }
+            }
+            color = mix(u_colorA, u_colorB, nearest);
+            color += u_colorC * (1.0 - smoothstep(0.0, 0.08, second - nearest));
+          } else if (u_effect == 9) {
+            vec2 q = p * u_scale;
+            float grid = min(abs(fract(q.x) - 0.5), abs(fract(q.y) - 0.5));
+            float glow = 0.015 / max(grid, 0.002);
+            float wave = 0.5 + 0.5 * sin(q.x * 2.0 + q.y * 1.5 + time);
+            color = u_colorA + u_colorB * min(glow, 1.0) * wave;
+          } else if (u_effect == 10) {
+            vec2 z = (uv - 0.5) * 3.0;
+            vec2 c = z + vec2(-0.55 + sin(time * 0.07) * 0.08, 0.0);
+            float iter = 0.0;
+            for (int i = 0; i < 24; i++) {
+              if (dot(z, z) > 16.0) break;
+              z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
+              iter += 1.0;
+            }
+            float shade = iter / 24.0;
+            color = mix(u_colorA, u_colorB, shade);
+            color = mix(color, u_colorC, smoothstep(0.25, 0.8, shade));
+          } else if (u_effect == 11) {
+            vec2 q = vec2(p.x * 3.0, p.y * 2.0 + time * 0.25);
+            float flame = fbm(q + vec2(0.0, -time * 0.3));
+            float heat = smoothstep(0.05, 0.9, flame - p.y * 0.35);
+            color = mix(u_colorA, u_colorB, heat);
+            color = mix(color, u_colorC, smoothstep(0.55, 0.9, heat));
+          } else if (u_effect == 12) {
+            float cloud = fbm(p * u_scale + vec2(time * 0.06, -time * 0.08));
+            float stars = pow(hash(floor(uv * 110.0)), 18.0);
+            color = mix(u_colorA, u_colorB, smoothstep(0.15, 0.85, cloud));
+            color += u_colorC * stars * 1.8;
+          } else if (u_effect == 13) {
+            vec2 q = uv * vec2(55.0, 32.0);
+            vec2 cell = floor(q);
+            float dots = pow(hash(cell), 18.0);
+            float wave = 0.5 + 0.5 * sin(length(p) * 12.0 - time * 1.5);
+            color = mix(u_colorA, u_colorB, dots * wave);
+          } else if (u_effect == 14) {
+            float ring = abs(length(p) - (0.18 + 0.05 * sin(time)));
+            float ripple = 0.012 / max(ring, 0.003);
+            color = u_colorA + u_colorB * min(ripple, 1.0);
+            color += u_colorC * (0.5 + 0.5 * sin(ring * 60.0 - time * 2.0)) * exp(-ring * 4.0);
+          } else if (u_effect == 15) {
+            float angle = atan(p.y, p.x);
+            float r = length(p);
+            float pattern = sin(angle * 8.0 + time * 0.4) * cos(r * 12.0 - time);
+            color = mix(u_colorA, u_colorB, pattern * 0.5 + 0.5);
+            color = mix(color, u_colorC, smoothstep(0.8, 1.0, abs(pattern)));
+          } else if (u_effect == 16) {
+            float fog = fbm(p * 2.0 + vec2(time * 0.05, time * 0.08));
+            float density = smoothstep(0.18, 0.78, fog - p.y * 0.15);
+            color = mix(u_colorA, u_colorB, density);
+            color += u_colorC * density * (0.25 + 0.25 * sin(p.x * 5.0 + time));
+          } else if (u_effect == 17) {
+            float a = atan(p.y, p.x);
+            float r = length(p);
+            float arms = sin(a * 3.0 - r * 8.0 + time * 0.25);
+            float stars = pow(hash(floor(uv * 90.0)), 22.0);
+            color = mix(u_colorA, u_colorB, smoothstep(-0.2, 0.7, arms) * exp(-r * 0.6));
+            color += u_colorC * stars;
+          } else if (u_effect == 18) {
+            float field = sin(p.x * 8.0 + fbm(p * 3.0 + time * 0.1) * 5.0);
+            float lines = 0.025 / max(abs(field), 0.008);
+            color = u_colorA + u_colorB * min(lines, 1.0);
+            color += u_colorC * exp(-length(p - (u_mouse - 0.5) * 2.0) * 3.0);
+          } else {
+            float pattern = fbm(p * u_scale + time * 0.08);
+            color = mix(u_colorA, u_colorB, pattern);
+            color = mix(color, u_colorC, smoothstep(0.45, 0.9, pattern));
+          }
+
+          float vignette = smoothstep(1.35, 0.18, length(p));
+          color *= 0.72 + vignette * 0.28;
+          gl_FragColor = vec4(color, 1.0);
+        }
+      `;
+
+      const effectStyles = {};
+      const effectGroups = [
+        [ 0, 0.55, 2.5, [ '#071a23', '#26d7b7', '#a7f3d0' ], [ 'auroraShader', 'auroraRibbonShader' ] ],
+        [ 1, 0.7, 1.0, [ '#020617', '#dbeafe', '#fef3c7' ], [ 'starfieldShader', 'deepSpaceShader', 'starNurseryShader' ] ],
+        [ 2, 0.35, 1.0, [ '#050816', '#8b5cf6', '#22d3ee' ], [ 'metaballShader', 'raymarchedSphere', 'refractiveGlassSphere' ] ],
+        [ 3, 0.5, 3.0, [ '#081426', '#38bdf8', '#dbeafe' ], [ 'voronoiShader', 'fractalNoiseShader', 'cellularGrowthShader', 'quantumFieldShader' ] ],
+        [ 4, 0.5, 2.0, [ '#031b2a', '#0284c7', '#67e8f9' ], [ 'causticsShader', 'oceanSurfaceShader', 'waterRippleShader' ] ],
+        [ 5, 0.8, 3.0, [ '#18052d', '#ec4899', '#22d3ee' ], [ 'plasmaStormShader', 'interferencePatternShader', 'electricFieldShader' ] ],
+        [ 6, 0.45, 3.2, [ '#111827', '#e2e8f0', '#64748b' ], [ 'marbleShader', 'liquidMetalShader', 'ripplingSilkShader' ] ],
+        [ 7, 0.35, 2.4, [ '#07111d', '#7dd3fc', '#f0abfc' ], [ 'glassRefractionShader', 'chromaticAberrationShader', 'iridescentShader', 'metallicSheenShader' ] ],
+        [ 8, 0.4, 5.0, [ '#07101e', '#a5f3fc', '#f8fafc' ], [ 'crystalShader', 'prismLightShader' ] ],
+        [ 9, 0.65, 7.0, [ '#07051b', '#22d3ee', '#f472b6' ], [ 'hologramShader', 'neonGridShader' ] ],
+        [ 10, 0.2, 1.0, [ '#080617', '#f472b6', '#facc15' ], [ 'mandelbrotZoom', 'kaleidoscopeShader' ] ],
+        [ 11, 0.55, 2.4, [ '#160502', '#f97316', '#fde047' ], [ 'firePlasmaShader', 'lavaShader', 'magmaFlowShader' ] ],
+        [ 12, 0.25, 2.2, [ '#09071e', '#7c3aed', '#f0abfc' ], [ 'nebulaShader', 'smokeShader', 'volumetricFogShader' ] ],
+        [ 13, 0.45, 2.8, [ '#030817', '#38bdf8', '#f8fafc' ], [ 'particleCloudShader', 'binaryStarShader' ] ],
+        [ 14, 0.7, 2.5, [ '#03111b', '#0ea5e9', '#a5f3fc' ], [ 'distortionRippleShader' ] ],
+        [ 15, 0.4, 1.2, [ '#09051a', '#a78bfa', '#f472b6' ], [ 'galaxySpiralShader' ] ],
+        [ 16, 0.3, 2.0, [ '#101827', '#94a3b8', '#cbd5e1' ], [ 'terrainHeightShader', 'sunsetSkyShader' ] ],
+        [ 17, 0.35, 1.0, [ '#030714', '#f97316', '#fef3c7' ], [ 'smokeShader' ] ],
+        [ 18, 0.55, 4.0, [ '#080617', '#a855f7', '#22d3ee' ], [ 'tunnelWarpShader' ] ]
+      ];
+      effectGroups.forEach(([ effect, speed, scale, colors, names ]) => {
+        names.forEach((name) => { effectStyles[ name ] = { effect, speed, scale, colors }; });
+      });
+
       const uniforms = {
         u_time: { value: 0 },
         u_resolution: { value: new THREE.Vector2(1, 1) },
-        u_mouse: { value: new THREE.Vector2(0.5, 0.5) }
+        u_mouse: { value: new THREE.Vector2(0.5, 0.5) },
+        u_effect: { value: 0 },
+        u_speed: { value: 0.5 },
+        u_scale: { value: 2.5 },
+        u_colorA: { value: new THREE.Color('#071a23') },
+        u_colorB: { value: new THREE.Color('#26d7b7') },
+        u_colorC: { value: new THREE.Color('#a7f3d0') }
       };
 
       let material = null;
@@ -200,7 +457,20 @@
 
       function setShader (name) {
         if (mesh) { scene.remove(mesh); mesh.geometry.dispose(); material.dispose(); }
-        material = new THREE.ShaderMaterial({ vertexShader, fragmentShader: shaders[ name ], uniforms });
+        const style = effectStyles[ name ];
+        if (style) {
+          uniforms.u_effect.value = style.effect;
+          uniforms.u_speed.value = style.speed;
+          uniforms.u_scale.value = style.scale;
+          uniforms.u_colorA.value.set(style.colors[ 0 ]);
+          uniforms.u_colorB.value.set(style.colors[ 1 ]);
+          uniforms.u_colorC.value.set(style.colors[ 2 ]);
+        }
+        material = new THREE.ShaderMaterial({
+          vertexShader,
+          fragmentShader: style ? proceduralFragmentShader : shaders[ name ],
+          uniforms
+        });
         const geometry = new THREE.PlaneGeometry(2, 2);
         mesh = new THREE.Mesh(geometry, material);
         scene.add(mesh);

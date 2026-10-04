@@ -288,50 +288,50 @@ Mark items `[x]` as they get implemented. Items already live in the code are pre
 - [x] 4. Noise Field
 - [x] 5. Interactive Particles
 - [x] 6. Animated Waves
-- [ ] 7. Starfield / Warp Speed
-- [ ] 8. Constellation Network
-- [ ] 9. Matrix Digital Rain
-- [ ] 10. Voronoi Cellular
-- [ ] 11. Spirograph Pattern
-- [ ] 12. Fireworks Trails
-- [ ] 13. Perlin Noise Terrain
-- [ ] 14. Recursive Tree
-- [ ] 15. Circle Packing
-- [ ] 16. Grid Distortion
-- [ ] 17. Particle Vortex
-- [ ] 18. Sound Wave Bars
-- [ ] 19. Ripple Grid
-- [ ] 20. Maze Generator
-- [ ] 21. Fractal Bloom
-- [ ] 22. Orbiting Bodies
-- [ ] 23. Magnetic Field Lines
-- [ ] 24. Cellular Automata
-- [ ] 25. Sand Simulation
-- [ ] 26. Fluid Particle Sim
-- [ ] 27. Lightning Bolt
-- [ ] 28. Text Particle Morph
-- [ ] 29. Kaleidoscope
-- [ ] 30. Wireframe Sphere
-- [ ] 31. DNA Helix
-- [ ] 32. Boids Flocking
-- [ ] 33. Polygon Morph
-- [ ] 34. Radar Sweep
-- [ ] 35. Pixel Sort
-- [ ] 36. Glitch Distortion
-- [ ] 37. Heat Map Flow
-- [ ] 38. Spiral Galaxy
-- [ ] 39. Bezier Curve Dance
-- [ ] 40. Grid Wave Mesh
-- [ ] 41. Particle Fountain
-- [ ] 42. Snake Trail
-- [ ] 43. Comet Field
-- [ ] 44. Tunnel Zoom
-- [ ] 45. Audio Spectrum
-- [ ] 46. Rain Simulation
-- [ ] 47. Ink Diffusion
-- [ ] 48. Chladni Pattern
-- [ ] 49. Symmetry Mandala
-- [ ] 50. Data Stream
+- [x] 7. Starfield / Warp Speed
+- [x] 8. Constellation Network
+- [x] 9. Matrix Digital Rain
+- [x] 10. Voronoi Cellular
+- [x] 11. Spirograph Pattern
+- [x] 12. Fireworks Trails
+- [x] 13. Perlin Noise Terrain
+- [x] 14. Recursive Tree
+- [x] 15. Circle Packing
+- [x] 16. Grid Distortion
+- [x] 17. Particle Vortex
+- [x] 18. Sound Wave Bars
+- [x] 19. Ripple Grid
+- [x] 20. Maze Generator
+- [x] 21. Fractal Bloom
+- [x] 22. Orbiting Bodies
+- [x] 23. Magnetic Field Lines
+- [x] 24. Cellular Automata
+- [x] 25. Sand Simulation
+- [x] 26. Fluid Particle Sim
+- [x] 27. Lightning Bolt
+- [x] 28. Text Particle Morph
+- [x] 29. Kaleidoscope
+- [x] 30. Wireframe Sphere
+- [x] 31. DNA Helix
+- [x] 32. Boids Flocking
+- [x] 33. Polygon Morph
+- [x] 34. Radar Sweep
+- [x] 35. Pixel Sort
+- [x] 36. Glitch Distortion
+- [x] 37. Heat Map Flow
+- [x] 38. Spiral Galaxy
+- [x] 39. Bezier Curve Dance
+- [x] 40. Grid Wave Mesh
+- [x] 41. Particle Fountain
+- [x] 42. Snake Trail
+- [x] 43. Comet Field
+- [x] 44. Tunnel Zoom
+- [x] 45. Audio Spectrum
+- [x] 46. Rain Simulation
+- [x] 47. Ink Diffusion
+- [x] 48. Chladni Pattern
+- [x] 49. Symmetry Mandala
+- [x] 50. Data Stream
 
 ---
 
@@ -343,50 +343,50 @@ Mark items `[x]` as they get implemented. Items already live in the code are pre
 - [x] 4. Wave Shader
 - [x] 5. Organic Blobs
 - [x] 6. Interactive Mouse Shader
-- [ ] 7. Aurora Shader
-- [ ] 8. Starfield Shader
-- [ ] 9. Metaball Shader
-- [ ] 10. Glass Refraction Shader
-- [ ] 11. Fire Plasma Shader
-- [ ] 12. Voronoi Shader
-- [ ] 13. Fractal Noise Shader
-- [ ] 14. Caustics Shader
-- [ ] 15. Marble Shader
-- [ ] 16. Nebula Shader
-- [ ] 17. Ocean Surface Shader
-- [ ] 18. Lava Shader
-- [ ] 19. Crystal Shader
-- [ ] 20. Hologram Shader
-- [ ] 21. Distortion Ripple Shader
-- [ ] 22. Kaleidoscope Shader
-- [ ] 23. Smoke Shader
-- [ ] 24. Galaxy Spiral Shader
-- [ ] 25. Electric Field Shader
-- [ ] 26. Iridescent Shader
-- [ ] 27. Terrain Height Shader
-- [ ] 28. Particle Cloud Shader
-- [ ] 29. Raymarched Sphere
-- [ ] 30. Chromatic Aberration Shader
-- [ ] 31. Mandelbrot Zoom
-- [ ] 32. Cellular Growth Shader
-- [ ] 33. Water Ripple Shader
-- [ ] 34. Neon Grid Shader
-- [ ] 35. Plasma Storm Shader
-- [ ] 36. Refractive Glass Sphere
-- [ ] 37. Aurora Ribbon Shader
-- [ ] 38. Sunset Sky Shader
-- [ ] 39. Deep Space Shader
-- [ ] 40. Quantum Field Shader
-- [ ] 41. Metallic Sheen Shader
-- [ ] 42. Liquid Metal Shader
-- [ ] 43. Interference Pattern Shader
-- [ ] 44. Volumetric Fog Shader
-- [ ] 45. Prism Light Shader
-- [ ] 46. Rippling Silk Shader
-- [ ] 47. Magma Flow Shader
-- [ ] 48. Star Nursery Shader
-- [ ] 49. Binary Star Shader
-- [ ] 50. Tunnel Warp Shader
+- [x] 7. Aurora Shader
+- [x] 8. Starfield Shader
+- [x] 9. Metaball Shader
+- [x] 10. Glass Refraction Shader
+- [x] 11. Fire Plasma Shader
+- [x] 12. Voronoi Shader
+- [x] 13. Fractal Noise Shader
+- [x] 14. Caustics Shader
+- [x] 15. Marble Shader
+- [x] 16. Nebula Shader
+- [x] 17. Ocean Surface Shader
+- [x] 18. Lava Shader
+- [x] 19. Crystal Shader
+- [x] 20. Hologram Shader
+- [x] 21. Distortion Ripple Shader
+- [x] 22. Kaleidoscope Shader
+- [x] 23. Smoke Shader
+- [x] 24. Galaxy Spiral Shader
+- [x] 25. Electric Field Shader
+- [x] 26. Iridescent Shader
+- [x] 27. Terrain Height Shader
+- [x] 28. Particle Cloud Shader
+- [x] 29. Raymarched Sphere
+- [x] 30. Chromatic Aberration Shader
+- [x] 31. Mandelbrot Zoom
+- [x] 32. Cellular Growth Shader
+- [x] 33. Water Ripple Shader
+- [x] 34. Neon Grid Shader
+- [x] 35. Plasma Storm Shader
+- [x] 36. Refractive Glass Sphere
+- [x] 37. Aurora Ribbon Shader
+- [x] 38. Sunset Sky Shader
+- [x] 39. Deep Space Shader
+- [x] 40. Quantum Field Shader
+- [x] 41. Metallic Sheen Shader
+- [x] 42. Liquid Metal Shader
+- [x] 43. Interference Pattern Shader
+- [x] 44. Volumetric Fog Shader
+- [x] 45. Prism Light Shader
+- [x] 46. Rippling Silk Shader
+- [x] 47. Magma Flow Shader
+- [x] 48. Star Nursery Shader
+- [x] 49. Binary Star Shader
+- [x] 50. Tunnel Warp Shader
 
 ---
 

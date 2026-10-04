@@ -17,20 +17,19 @@ side, pick the one you like, and lift the code directly into your project.
 
 | Page | Technique | Styles |
 |---|---|---|
-| [`01-particles.html`](01-particles.html) | [tsParticles](https://particles.js.org/) (CDN) | Classic, Network, Snow, Bubble, Galaxy, Neon |
-| [`02-aurora.html`](02-aurora.html) | CSS blobs + vanilla JS | Purple, Ocean, Sunset, Emerald, Northern Lights, Neon |
-| [`03-gradient.html`](03-gradient.html) | CSS gradients + SVG filters | Mesh, Blob, Linear, Radial, Liquid, Multi-color |
-| [`04-waves.html`](04-waves.html) | SVG + Canvas | Simple, Multi-layer, Ocean, Gradient, SVG, Flowing |
-| [`05-fluid.html`](05-fluid.html) | CSS goo/SVG filters + Canvas | Fluid Blobs, Metaballs, Liquid, Organic, Mouse Interaction, Color-flow |
-| [`06-canvas.html`](06-canvas.html) | Canvas API | Flow Field, Trails, Generative Lines, Noise Field, Interactive, Waves |
-| [`07-webgl.html`](07-webgl.html) | [Three.js](https://threejs.org/) (CDN) shaders | Gradient, Noise, Liquid, Wave, Organic Blobs, Interactive Mouse |
+| [`01-particles.html`](01-particles.html) | [tsParticles](https://particles.js.org/) (CDN) | 50 variations |
+| [`02-aurora.html`](02-aurora.html) | CSS blobs + vanilla JS | 50 variations |
+| [`03-gradient.html`](03-gradient.html) | CSS gradients + SVG filters | 50 variations |
+| [`04-waves.html`](04-waves.html) | SVG + Canvas | 50 variations |
+| [`05-fluid.html`](05-fluid.html) | CSS goo/SVG filters + Canvas | 50 variations |
+| [`06-canvas.html`](06-canvas.html) | Canvas API | 50 variations |
+| [`07-webgl.html`](07-webgl.html) | [Three.js](https://threejs.org/) (CDN) shaders | 50 variations |
 
 Every page shares the same design language: fixed navbar to jump between pages, a glassmorphism
 content card, a style-selector to switch variations **without reloading**, mouse-reactive parallax +
 cursor spotlight + click ripple, and respect for `prefers-reduced-motion`.
 
-See [`DESIGN-CATALOG.md`](DESIGN-CATALOG.md) for the full roadmap — the goal is 50 variations per
-page (350 total), implemented incrementally.
+See [`DESIGN-CATALOG.md`](DESIGN-CATALOG.md) for the full catalog of 350 variations.
 
 ## Using a background in your own project
 

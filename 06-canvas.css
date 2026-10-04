@@ -158,6 +158,10 @@ main {
   gap: 10px;
   justify-content: center;
   max-width: 640px;
+  max-height: min(30vh, 360px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 4px;
 }
 
 .style-btn {
