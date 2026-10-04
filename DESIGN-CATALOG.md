@@ -394,5 +394,5 @@ Mark items `[x]` as they get implemented. Items already live in the code are pre
 
 1. ✅ Draft this catalog (350 names)
 2. ✅ Publish the public repo with README, LICENSE and GitHub Pages
-3. ⬜ Implement styles one page at a time, batch by batch, pushing as we go
+3. ✅ Implement all 350 styles and push the completed showcase
 4. ⬜ Once all pages are done, restructure into a `base/` folder as the final published layout
